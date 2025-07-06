@@ -11,3 +11,4 @@ build/
 *.log
 .bolt
 .stackblitz
+public/uploads/*
