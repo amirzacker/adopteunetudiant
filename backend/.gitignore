@@ -1,0 +1,13 @@
+
+# dependencies
+node_modules/
+build/
+*.DS_Store
+.env
+.adminbro
+.idea/
+.vscode/
+.DS_Store?
+*.log
+.bolt
+.stackblitz

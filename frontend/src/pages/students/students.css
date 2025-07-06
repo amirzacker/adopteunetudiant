@@ -1,0 +1,42 @@
+.card{
+  width: 18rem;
+  box-shadow: none;
+}
+
+.btn-secondary{
+  background-color: #E35226;
+  border-color: #E35226;
+}
+.btn-secondary:hover{
+  background-color: #212529;
+}
+
+#top-pagination{
+  margin-left: 100px;
+}
+
+
+
+/* responsive  */
+
+@media screen and (max-width: 991px) {
+  #top-pagination{
+    margin-left: 50px;
+  }
+ 
+}
+
+@media screen and (max-width: 790px) {
+  #top-pagination{
+   display: none !important;
+  }
+ 
+}
+
+@media screen and (max-width: 390px) {
+  .card {
+      margin: 0 !important;
+      margin-bottom: 12px !important;
+  }
+
+}

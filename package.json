@@ -1,0 +1,15 @@
+{
+  "name": "adopte1etudiant",
+  "version": "0.1.0",
+  "description": "Adopte1etudiant",
+  "main": "app.js",
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build && cd ../backend && npm ci",
+    "start": "node backend/www/app.js"
+  },
+  "author": "Amir zacker",
+  "license": "ISC",
+  "engines": {
+    "node": "16.13.1"
+  }
+}

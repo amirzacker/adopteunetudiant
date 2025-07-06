@@ -1,0 +1,33 @@
+
+
+  .card-img-top-favoris{
+    width: 150px;
+  }
+
+  .favoris-card{
+    margin: 1em 0 0 1em !important;
+    width: 16rem !important;
+  }
+  
+ 
+  @media screen and (max-width: 768px) {
+    .chatMenu {
+      flex: 1;
+    }
+  
+    .chatMenuInput {
+      display: none;
+    }
+  
+    .chatBox{
+      flex: 10;
+    }
+  
+    .chatOnline{
+      flex: 1px;
+    }
+    .noConversationText {
+      font-size: 30px;
+    }
+  }
+  

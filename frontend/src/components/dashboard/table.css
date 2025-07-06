@@ -1,0 +1,26 @@
+.table{
+    margin: 2rem 2rem 2rem 2rem;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    padding: 20px;
+    background: #262D2A;
+    color: white;
+    border-radius: 15px;
+}
+
+.nav-tabs .nav-link {
+    background: white;
+    color: black !important;
+}
+
+.nav-link {
+    margin-right: 30px;
+    border-color: white !important;
+}
+.nav-link.active {
+    border-color: #262D2A !important;
+    background-color: #E35226 !important;
+    color: white !important;
+}

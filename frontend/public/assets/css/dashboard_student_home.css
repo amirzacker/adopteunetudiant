@@ -1,0 +1,196 @@
+.home-icon {
+    background-color: #F2F8F1;
+}
+
+main {
+    display: flex;
+}
+
+.dashboard-partition {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 3rem;
+}
+
+.dashboard-partition h4 {
+    color: #E35226;
+}
+
+.dashboard-partition h6 a {
+    color: #1887DC;
+}
+
+.dash-partition-header-student {
+    width: 100%;
+    height: 250px;
+    border-radius: 20px;
+    margin: 2rem 2rem 2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dash-partition-header-student div {
+    padding: 2rem 0 2rem 2rem;
+    background-color: white;
+    height: 100%;
+    width: 33%;
+    border-radius: 20px;
+    box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+}
+
+.dash-partition-cv-lm {
+    display: flex;
+    width: 100%;
+    height: 250px;
+    border-radius: 20px;
+    margin: 2rem 2rem 2rem 2rem;
+    justify-content: space-between;
+}
+
+.partition-cv,
+.partition-lm {
+    padding: 2rem 0 2rem 2rem;
+    width: 40%;
+    height: 100%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+}
+
+.dash-partition-description {
+    padding: 2rem 0 2rem 2rem;
+    background-color: white;
+    width: 100%;
+    height: 250px;
+    border-radius: 20px;
+    margin: 2rem 2rem 2rem 2rem;
+    justify-content: space-between;
+    box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+}
+
+.partition-header-status div {
+    background-color: white;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 100%;
+}
+
+.partition-header-status div input {
+    padding-left: 1rem;
+}
+
+
+/* responsive  */
+
+@media screen and (max-width: 790px) {
+    .dash-partition-header-student {
+        height: 50%;
+    }
+    .adopted-button {
+        width: 150px;
+    }
+    .sidebar {
+        width: 20%;
+    }
+    .center-icons-dashboard {
+        width: 100%;
+    }
+    .student-avatar-dashboard img {
+        width: 60px;
+    }
+}
+
+@media screen and (max-width: 574px) {
+    main {
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar {
+        order: 2;
+        width: 90%;
+        height: 100px;
+    }
+    .sidebar ul {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 0;
+        height: 100%;
+    }
+    .center-icons-dashboard {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        margin-top: 0;
+        justify-content: space-between;
+        padding-right: 0.5rem;
+    }
+    .student-avatar-container {
+        width: 150px;
+    }
+    .home-icon:hover,
+    .home-icon-chat:hover,
+    .message-icon:hover,
+    .bell-icon:hover {
+        background-color: #F2F8F1;
+        border-radius: 0 0 15px 15px;
+        color: #262D2A;
+        transition: 0.3s;
+        padding: 0;
+    }
+    .home-icon,
+    .home-icon-chat,
+    .message-icon,
+    .bell-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 0 15px 15px;
+        height: 100%;
+    }
+    .student-avatar-dashboard {
+        display: flex;
+        align-items: center;
+    }
+    #logout-icon {
+        margin-left: 10px;
+    }
+    .dash-partition-header-student {
+        width: 100%;
+        height: 500px;
+        border-radius: 20px;
+        margin: 2rem 2rem 2rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        box-shadow: none;
+        background-color: transparent;
+    }
+    .partition-header-profil-entreprise,
+    .link-search-page {
+        border: none;
+    }
+    .dash-partition-header-student div {
+        padding: 2rem 0 2rem 2rem;
+        border-radius: 20px;
+        height: 45%;
+        width: 100%;
+        box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+    }
+    .partition-cv,
+    .partition-lm {
+        padding: 1rem 1rem 1rem 1rem;
+        width: 48%;
+        height: 100%;
+    }
+    .dash-partition-cv-lm {
+        margin-top: 5rem;
+    }
+    .partition-header-status div {
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        width: 100%;
+        height: 100%;
+    }
+}

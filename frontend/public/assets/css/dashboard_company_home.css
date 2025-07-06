@@ -1,0 +1,190 @@
+    .home-icon {
+        background-color: #F2F8F1;
+    }
+    
+    main {
+        display: flex;
+    }
+    
+    .dashboard-partition {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 3rem;
+    }
+    
+    .dashboard-partition h4 {
+        color: #E35226;
+    }
+    
+    .dashboard-partition h6 a {
+        color: #1887DC;
+    }
+    
+    .dash-partition-header {
+        padding: 2rem;
+        width: 100%;
+        height: 250px;
+        border-radius: 20px;
+        margin: 2rem 2rem 2rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+        background-color: white;
+    }
+    
+    .partition-header-profil-entreprise {
+        border-right: solid 2px black;
+    }
+    
+    .link-search-page {
+        border-left: solid 2px black;
+    }
+    
+    .link-search-page a {
+        color: #1887DC;
+        font-weight: bold;
+    }
+    
+    .dash-partition-header div {
+        padding: 2rem 0 2rem 2rem;
+        height: 100%;
+        width: 50%;
+    }
+    
+    .dash-partition-cv-lm {
+        display: flex;
+        width: 100%;
+        height: 250px;
+        border-radius: 20px;
+        margin: 2rem 2rem 2rem 2rem;
+        justify-content: space-between;
+    }
+    
+    .partition-cv,
+    .partition-lm {
+        padding: 2rem 0 2rem 2rem;
+        width: 40%;
+        height: 100%;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+    }
+    
+    .div-adopted-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        margin: 2rem 2rem 2rem 2rem;
+    }
+    
+    .div-adopted-button p {
+        text-align: center;
+        color: rgb(255, 255, 255);
+    }
+    
+    .adopted-button {
+        padding: 2rem 0 2rem 0;
+        background-color: #262D2A;
+        width: 20%;
+        border-radius: 20px;
+        box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+    }
+    /* responsive  */
+    
+    @media screen and (max-width: 790px) {
+        .dash-partition-header {
+            height: 50%;
+        }
+        .adopted-button {
+            width: 150px;
+        }
+        .sidebar {
+            width: 20%;
+        }
+        .center-icons-dashboard {
+            width: 100%;
+        }
+        .student-avatar-dashboard img {
+            width: 60px;
+        }
+    }
+    
+    @media screen and (max-width: 574px) {
+        main {
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar {
+            order: 2;
+            width: 90%;
+            height: 100px;
+        }
+        .sidebar ul {
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 0;
+            height: 100%;
+        }
+        .center-icons-dashboard {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            height: 100%;
+            margin-top: 0;
+            padding-right: 0.5rem;
+        }
+        .student-avatar-container {
+            width: 150px;
+        }
+        .home-icon:hover,
+        .home-icon-chat:hover,
+        .message-icon:hover,
+        .bell-icon:hover {
+            background-color: #F2F8F1;
+            border-radius: 0 0 15px 15px;
+            color: #262D2A;
+            transition: 0.3s;
+            padding: 0;
+        }
+        .home-icon,
+        .message-icon,
+        .bell-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0 0 15px 15px;
+            height: 100%;
+        }
+        .student-avatar-dashboard {
+            display: flex;
+            align-items: center;
+        }
+        #logout-icon {
+            margin-left: 10px;
+        }
+        .dash-partition-header {
+            width: 100%;
+            height: 500px;
+            border-radius: 20px;
+            margin: 2rem 2rem 2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            box-shadow: none;
+            background-color: transparent;
+        }
+        .partition-header-profil-entreprise,
+        .link-search-page {
+            border: none;
+        }
+        .dash-partition-header div {
+            padding: 2rem 0 2rem 2rem;
+            border-radius: 20px;
+            height: 45%;
+            width: 100%;
+            box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+        }
+    }

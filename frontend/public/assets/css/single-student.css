@@ -1,0 +1,238 @@
+.single-student-main {
+    margin: 1rem;
+    box-shadow: 0px 0px 40px -5px rgba(0, 0, 0, .5);
+    border-radius: 20px;
+}
+
+
+/* 1 ère partie  */
+
+.firstpart {
+    display: flex;
+    width: 100%;
+    height: 600px;
+}
+
+.profil-student {
+    width: 25%;
+    height: 100%;
+    border-right: solid 2px black;
+}
+
+.photo-student {
+    text-align: center;
+    height: 200px;
+}
+
+.photo-student img {
+    height: 100%;
+}
+
+.personal-information-student {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+}
+
+.description-student {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.description-student-principal {
+    width: 70%;
+    padding: 4rem;
+}
+
+.description-student-1 {
+    height: 30%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.description-student-2 {
+    height: 20%;
+}
+
+.description-student-3 {
+    height: 50%;
+}
+
+.attachments-student {
+    width: 30%;
+}
+
+.personal-information-student h3 {
+    color: #1887DC;
+    font-weight: bold;
+}
+
+.adopte-single-student-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+}
+
+.adopte-single-student-button {
+    background-color: #E35226;
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.adopte-single-student-container a {
+    color: #F2F8F1;
+    font-size: 120%;
+}
+
+.attachments-student-files {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* 2 ème partie  */
+
+.secondpart {
+    width: 100%;
+    height: 600px;
+    border-top: solid 2px black;
+}
+
+.secondpart h4 {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+
+/* responsive  */
+
+@media screen and (max-width: 991px) {
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+    .photo-student img {
+        height: 80%;
+    }
+    .adopte-single-student-container a {
+        font-size: 100%;
+        font-weight: bold;
+    }
+    .single-student-main {
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .photo-student img {
+        height: 50%;
+        margin-top: 5rem;
+    }
+    .attachments-student-files img {
+        width: 90%;
+    }
+    .adopte-single-student-container a {
+        font-size: 70%;
+        font-weight: bold;
+    }
+    .firstpart {
+        height: 60%;
+    }
+    .single-student-main {
+        height: 180vh;
+    }
+    .description-student-1 {
+        height: 20%;
+    }
+    .description-student-2 {
+        height: 10%;
+    }
+    .description-student-3 {
+        height: 50%;
+    }
+    .secondpart h4 {
+        font-size: 18px;
+    }
+    .personal-information-student {
+        text-align: center;
+    }
+    .attachments-student-files {
+        justify-content: flex-start;
+    }
+}
+
+@media screen and (max-width: 574px) {
+    .single-student-main {
+        height: auto;
+    }
+    .firstpart {
+        display: flex;
+        flex-direction: column;
+        ;
+    }
+    /**/
+    .profil-student {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 20%;
+        border: none;
+        margin: 2rem 0 2rem 0;
+    }
+    .profil-student .photo-student {
+        order: 2;
+    }
+    /**/
+    .photo-student img {
+        height: 70%;
+    }
+    .description-student {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .description-student-principal {
+        padding: 0;
+    }
+    .adopte-single-student-container a {
+        font-size: 50%;
+        font-weight: bold;
+    }
+    .attachments-student {
+        display: flex;
+        flex-direction: column;
+    }
+    .attachments-student .adopte-single-student-container {
+        order: 2;
+    }
+    .adopte-single-student-button {
+        margin: 1rem;
+        width: 100px;
+    }
+    .attachments-student-files {
+        padding: 1rem;
+    }
+    .description-student-1 {
+        margin: 3rem 0 3rem 0;
+    }
+    .secondpart {
+        height: 400px;
+    }
+}

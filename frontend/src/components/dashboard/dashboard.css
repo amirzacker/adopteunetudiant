@@ -1,0 +1,20 @@
+/* dashboard_student_home.css */
+
+.users-icon {
+    background-color: #F2F8F1 !important;
+}
+
+.home-icon,
+.home-icon-chat:hover,
+.message-icon:hover,
+.bell-icon:hover {
+    background-color: #F2F8F1;
+    border-radius: 40px 0 0 40px;
+    color: #262D2A;
+    transition: 0.3s;
+    padding-left: 10px;
+}
+
+/* .users-icon {
+    background-color: #F2F8F1;
+} */
