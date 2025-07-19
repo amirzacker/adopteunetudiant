@@ -5,7 +5,9 @@
   "main": "www/app.js",
   "scripts": {
     "start": "node www/app.js",
-    "dev": "nodemon www/app.js"
+    "dev": "nodemon www/app.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "admin-bro": "^4.0.1",
@@ -33,6 +35,32 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@faker-js/faker": "^9.9.0",
+    "jest": "^29.7.0",
+    "mockingoose": "^2.16.2",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.spec.js",
+      "**/tests/**/*.test.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup/jest.setup.js"
+    ],
+    "collectCoverageFrom": [
+      "api/**/*.js",
+      "!api/**/index.js",
+      "!**/node_modules/**"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "testTimeout": 30000
   }
 }
