@@ -161,17 +161,23 @@ export default function Messenger() {
         <div className="dashboard-partition">
           <div className="messenger">
             <div className="chatMenu">
-              <div className="chatMenuWrapper">
-                {conversations.map((c, i) => (
-                  <div key={i} onClick={() => setCurrentChat(c)}>
-                    <Conversation
-                      key={i}
-                      conversation={c}
-                      currentUser={user?.user}
-                    />
+              {conversations && conversations.length > 0 ? (
+                  <div className="chatMenuWrapper">
+                    {conversations.map((c, i) => (
+                        <div key={i} onClick={() => setCurrentChat(c)}>
+                          <Conversation
+                              key={i}
+                              conversation={c}
+                              currentUser={user?.user}
+                          />
+                        </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+              ) : (
+                  <span className="noConversation">
+                    Pas de conversation pour le moment
+                  </span>
+              )}
             </div>
             <div className="chatBox">
               <div className="chatBoxWrapper">

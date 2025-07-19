@@ -1,23 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './jobOffer.css';
 
 const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
+  const [hasApplied, setHasApplied] = useState(false);
+  const [checkingApplication, setCheckingApplication] = useState(false);
+  // Check if user has already applied when component mounts
+  useEffect(() => {
+    if (user?.user?.isStudent && user?.token) {
+      checkIfApplied();
+    }
+  }, [user, job._id]);
+
+  const checkIfApplied = async () => {
+    if (!user?.user?.isStudent || !user?.token) return;
+
+    // Use _id instead of id for consistency
+    const userId = user.user._id || user.user.id;
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+
+    setCheckingApplication(true);
+    try {
+      const response = await axios.get(
+        `/api/jobApplications/check/${userId}/${job._id}`,
+        {
+          headers: {
+            'x-access-token': user.token
+          }
+        }
+      );
+      setHasApplied(response.data.hasApplied);
+    } catch (err) {
+      console.error('Error checking application status:', err);
+      // Don't set hasApplied to true on error, keep it false
+    } finally {
+      setCheckingApplication(false);
+    }
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('fr-FR');
   };
 
   const getJobTypeLabel = (jobType) => {
-    return jobType === 'alternance' ? 'Alternance' : 'Stage';
+    // jobType is now a SearchType object with a name property
+    return jobType?.name || 'Non spécifié';
   };
 
   const handleApplyClick = (e) => {
     e.stopPropagation();
+    if (hasApplied) {
+      return; // Do nothing if already applied
+    }
     if (user?.user?.isStudent) {
       onApplyClick(job);
     } else {
       // Redirect to login if not authenticated
       window.location.href = '/login';
     }
+  };
+
+  const getApplyButtonText = () => {
+    if (checkingApplication) return 'Vérification...';
+    if (hasApplied) return 'Déjà postulé';
+    if (user?.user?.isStudent) return 'Postuler';
+    return 'Se connecter';
+  };
+
+  const isApplyButtonDisabled = () => {
+    return checkingApplication || hasApplied;
   };
 
   return (
@@ -33,7 +87,7 @@ const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
           />
         </div>
         <div className="job-offer-meta">
-          <span className={`job-type-badge ${job.jobType}`}>
+          <span className={`job-type-badge ${job.jobType?.name?.toLowerCase()}`}>
             {getJobTypeLabel(job.jobType)}
           </span>
           <span className="job-date">{formatDate(job.publicationDate)}</span>
@@ -74,11 +128,12 @@ const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
           <button className="view-details-btn">
             Voir détails
           </button>
-          <button 
-            className="apply-btn"
+          <button
+            className={`apply-btn ${hasApplied ? 'already-applied' : ''}`}
             onClick={handleApplyClick}
+            disabled={isApplyButtonDisabled()}
           >
-            {user?.user?.isStudent ? 'Postuler' : 'Se connecter'}
+            {getApplyButtonText()}
           </button>
         </div>
       </div>

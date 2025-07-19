@@ -186,6 +186,20 @@
   background: #2980b9;
 }
 
+.apply-btn.already-applied {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.apply-btn.already-applied:hover {
+  background: #95a5a6;
+}
+
+.apply-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .job-offer-card {

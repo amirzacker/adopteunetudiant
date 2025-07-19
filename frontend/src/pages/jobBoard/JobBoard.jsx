@@ -19,6 +19,7 @@ const JobBoard = () => {
   });
   const [domains, setDomains] = useState([]);
   const [searchTypes, setSearchTypes] = useState([]);
+
   const [selectedJob, setSelectedJob] = useState(null);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
 
@@ -31,6 +32,7 @@ const JobBoard = () => {
     fetchJobOffers();
     fetchDomains();
     fetchSearchTypes();
+
   }, []);
 
   useEffect(() => {
@@ -78,6 +80,8 @@ const JobBoard = () => {
     }
   };
 
+
+
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
       ...prev,
@@ -120,7 +124,8 @@ const JobBoard = () => {
   };
 
   const getJobTypeLabel = (jobType) => {
-    return jobType === 'alternance' ? 'Alternance' : 'Stage';
+    // jobType is now a SearchType object with a name property
+    return jobType?.name || 'Non spécifié';
   };
 
   if (loading) {
@@ -176,8 +181,11 @@ const JobBoard = () => {
                   onChange={(e) => handleFilterChange('jobType', e.target.value)}
                 >
                   <option value="">Tous les types</option>
-                  <option value="stage">Stage</option>
-                  <option value="alternance">Alternance</option>
+                  {searchTypes.map(type => (
+                    <option key={type._id} value={type._id}>
+                      {type.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -304,6 +312,61 @@ const JobBoard = () => {
 
 // Job Detail Modal Component
 const JobDetailModal = ({ job, onClose, onApply, user }) => {
+  const [hasApplied, setHasApplied] = useState(false);
+  const [checkingApplication, setCheckingApplication] = useState(false);
+
+  // Check if user has already applied when component mounts
+  useEffect(() => {
+    if (user?.user?.isStudent && user?.token) {
+      checkIfApplied();
+    }
+  }, [user, job._id]);
+
+  const getJobTypeLabel = (jobType) => {
+    // jobType is now a SearchType object with a name property
+    return jobType?.name || 'Non spécifié';
+  };
+
+  const checkIfApplied = async () => {
+    if (!user?.user?.isStudent || !user?.token) return;
+
+    // Use _id instead of id for consistency
+    const userId = user.user._id || user.user.id;
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+
+    setCheckingApplication(true);
+    try {
+      const response = await axios.get(
+        `/api/jobApplications/check/${userId}/${job._id}`,
+        {
+          headers: {
+            'x-access-token': user.token
+          }
+        }
+      );
+      setHasApplied(response.data.hasApplied);
+    } catch (err) {
+      console.error('Error checking application status:', err);
+      // Don't set hasApplied to true on error, keep it false
+    } finally {
+      setCheckingApplication(false);
+    }
+  };
+
+  const handleApplyClick = () => {
+    if (hasApplied) return;
+    onApply();
+  };
+
+  const getApplyButtonText = () => {
+    if (checkingApplication) return 'Vérification...';
+    if (hasApplied) return 'Déjà postulé';
+    return 'Postuler à cette offre';
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content job-detail-modal" onClick={(e) => e.stopPropagation()}>
@@ -319,8 +382,8 @@ const JobDetailModal = ({ job, onClose, onApply, user }) => {
               <p>{job.company.city}</p>
             </div>
             <div className="job-meta-detail">
-              <span className={`job-type ${job.jobType}`}>
-                {job.jobType === 'alternance' ? 'Alternance' : 'Stage'}
+              <span className={`job-type ${job.jobType?.name?.toLowerCase()}`}>
+                {getJobTypeLabel(job.jobType)}
               </span>
               <span className="job-location">{job.location}</span>
             </div>
@@ -342,7 +405,7 @@ const JobDetailModal = ({ job, onClose, onApply, user }) => {
                 <strong>Domaine:</strong> {job.domain?.name}
               </div>
               <div className="detail-item">
-                <strong>Type de recherche:</strong> {job.searchType?.name}
+                <strong>Type d'emploi:</strong> {job.jobType?.name}
               </div>
               {job.salary && (
                 <div className="detail-item">
@@ -373,8 +436,12 @@ const JobDetailModal = ({ job, onClose, onApply, user }) => {
 
         <div className="modal-footer">
           {user?.user?.isStudent && (
-            <button className="apply-btn-modal" onClick={onApply}>
-              Postuler à cette offre
+            <button
+              className={`apply-btn-modal ${hasApplied ? 'already-applied' : ''}`}
+              onClick={handleApplyClick}
+              disabled={checkingApplication || hasApplied}
+            >
+              {getApplyButtonText()}
             </button>
           )}
           <button className="cancel-btn" onClick={onClose}>

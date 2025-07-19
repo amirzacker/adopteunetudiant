@@ -5,8 +5,7 @@ import axios from 'axios';
 const ApplicationForm = ({ job, onClose, onSuccess }) => {
   const { user } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    coverLetter: '',
-    resume: user?.user?.cv || ''
+    coverLetter: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -18,9 +17,18 @@ const ApplicationForm = ({ job, onClose, onSuccess }) => {
   }, []);
 
   const checkIfApplied = async () => {
+    if (!user?.user?.isStudent || !user?.token) return;
+
+    // Use _id instead of id for consistency
+    const userId = user.user._id || user.user.id;
+    if (!userId) {
+      console.error('User ID not found');
+      return;
+    }
+
     try {
       const response = await axios.get(
-        `/api/jobApplications/check/${user.user.id}/${job._id}`,
+        `/api/jobApplications/check/${userId}/${job._id}`,
         {
           headers: {
             'x-access-token': user.token
@@ -49,11 +57,6 @@ const ApplicationForm = ({ job, onClose, onSuccess }) => {
       return;
     }
 
-    if (!formData.resume.trim()) {
-      setError('Le CV est requis');
-      return;
-    }
-
     setLoading(true);
     setError('');
 
@@ -61,7 +64,7 @@ const ApplicationForm = ({ job, onClose, onSuccess }) => {
       const applicationData = {
         jobOffer: job._id,
         coverLetter: formData.coverLetter,
-        resume: formData.resume
+        resume: user?.user?.cv || 'CV from profile'
       };
 
       await axios.post('/api/jobApplications', applicationData, {
@@ -122,7 +125,7 @@ const ApplicationForm = ({ job, onClose, onSuccess }) => {
               <h3>{job.company.name}</h3>
               <p><strong>Poste:</strong> {job.title}</p>
               <p><strong>Localisation:</strong> {job.location}</p>
-              <p><strong>Type:</strong> {job.jobType === 'alternance' ? 'Alternance' : 'Stage'}</p>
+              <p><strong>Type:</strong> {job.jobType?.name || 'Non spécifié'}</p>
             </div>
 
             {error && <div className="error-message">{error}</div>}
@@ -146,24 +149,7 @@ const ApplicationForm = ({ job, onClose, onSuccess }) => {
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="resume">
-                CV <span className="required">*</span>
-              </label>
-              <input
-                type="text"
-                id="resume"
-                name="resume"
-                value={formData.resume}
-                onChange={handleInputChange}
-                placeholder="Nom du fichier CV (ex: cv_john_doe.pdf)"
-                required
-                disabled={loading}
-              />
-              <div className="form-help">
-                Assurez-vous que votre CV est à jour dans votre profil utilisateur.
-              </div>
-            </div>
+
 
             <div className="application-info">
               <h4>Informations de candidature</h4>

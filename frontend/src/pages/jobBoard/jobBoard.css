@@ -325,6 +325,20 @@
   background: #1470b8;
 }
 
+.apply-btn-modal.already-applied {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.apply-btn-modal.already-applied:hover {
+  background: #95a5a6;
+}
+
+.apply-btn-modal:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
 .cancel-btn {
   background: #95a5a6;
   color: white;

@@ -71,6 +71,19 @@
   font-size: 60px;
   cursor: default;
 }
+.noConversation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 18px;
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+
 
 @media screen and (max-width: 768px) {
   .chatMenu {
@@ -90,5 +103,9 @@
   }
   .noConversationText {
     font-size: 30px;
+  }
+  .noConversation {
+    font-size: 14px;
+    padding: 10px;
   }
 }

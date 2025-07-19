@@ -28,7 +28,8 @@ const JobOffersPreview = () => {
   };
 
   const getJobTypeLabel = (jobType) => {
-    return jobType === 'alternance' ? 'Alternance' : 'Stage';
+    // jobType is now a SearchType object with a name property
+    return jobType?.name || 'Non spécifié';
   };
 
   if (loading) {
@@ -91,7 +92,7 @@ const JobOffersPreview = () => {
                     />
                   </div>
                   <div className="job-preview-meta">
-                    <span className={`job-type-badge ${job.jobType}`}>
+                    <span className={`job-type-badge ${job.jobType?.name?.toLowerCase()}`}>
                       {getJobTypeLabel(job.jobType)}
                     </span>
                     <span className="job-date">{formatDate(job.publicationDate)}</span>

@@ -32,9 +32,10 @@ const jobOfferSchema = Schema({
     default: Date.now
   },
   jobType: {
-    type: String,
-    enum: ["alternance", "stage"],
-    required: [true, "Job type is required"]
+    type: Schema.Types.ObjectId,
+    ref: "SearchType",
+    required: true,
+    autopopulate: true
   },
   domain: {
     type: Schema.Types.ObjectId,
@@ -42,12 +43,7 @@ const jobOfferSchema = Schema({
     required: true,
     autopopulate: true
   },
-  searchType: {
-    type: Schema.Types.ObjectId,
-    ref: "SearchType",
-    required: true,
-    autopopulate: true
-  },
+
   status: {
     type: String,
     enum: ["draft", "published", "closed"],

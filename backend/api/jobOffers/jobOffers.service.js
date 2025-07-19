@@ -10,7 +10,7 @@ class JobOfferService {
     if (filters.domain) query.domain = filters.domain;
     if (filters.jobType) query.jobType = filters.jobType;
     if (filters.location) query.location = new RegExp(filters.location, 'i');
-    if (filters.searchType) query.searchType = filters.searchType;
+
     if (filters.search) {
       query.$text = { $search: filters.search };
     }
@@ -21,7 +21,7 @@ class JobOfferService {
       .sort(sort)
       .populate('company', 'name email city profilePicture')
       .populate('domain')
-      .populate('searchType');
+      .populate('jobType');
   }
 
   // Get job offer by ID
@@ -56,7 +56,7 @@ class JobOfferService {
 
     return queryBuilder
       .populate('domain')
-      .populate('searchType');
+      .populate('jobType');
   }
 
   // Create new job offer
@@ -172,7 +172,7 @@ class JobOfferService {
       domain,
       jobType,
       location,
-      searchType,
+
       salaryMin,
       salaryMax,
       page = 1,
@@ -187,7 +187,7 @@ class JobOfferService {
     
     if (domain) filter.domain = domain;
     if (jobType) filter.jobType = jobType;
-    if (searchType) filter.searchType = searchType;
+
     if (location) filter.location = new RegExp(location, 'i');
 
     const sort = query ? { score: { $meta: "textScore" } } : { publicationDate: -1 };
@@ -200,7 +200,7 @@ class JobOfferService {
         .limit(parseInt(limit))
         .populate('company', 'name city profilePicture')
         .populate('domain')
-        .populate('searchType'),
+        .populate('jobType'),
       JobOffer.countDocuments(filter)
     ]);
 

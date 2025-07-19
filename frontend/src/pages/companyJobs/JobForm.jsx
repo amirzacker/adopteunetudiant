@@ -9,9 +9,9 @@ const JobForm = ({ job, onClose, onSuccess }) => {
     description: '',
     location: '',
     requirements: '',
-    jobType: 'stage',
+    jobType: '',
     domain: '',
-    searchType: '',
+
     salary: '',
     duration: '',
     startDate: '',
@@ -23,12 +23,14 @@ const JobForm = ({ job, onClose, onSuccess }) => {
   });
   const [domains, setDomains] = useState([]);
   const [searchTypes, setSearchTypes] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchDomains();
     fetchSearchTypes();
+
     
     if (job) {
       // Populate form with existing job data
@@ -37,9 +39,9 @@ const JobForm = ({ job, onClose, onSuccess }) => {
         description: job.description || '',
         location: job.location || '',
         requirements: job.requirements || '',
-        jobType: job.jobType || 'stage',
+        jobType: job.jobType?._id || '',
         domain: job.domain?._id || '',
-        searchType: job.searchType?._id || '',
+
         salary: job.salary || '',
         duration: job.duration || '',
         startDate: job.startDate ? new Date(job.startDate).toISOString().split('T')[0] : '',
@@ -70,6 +72,8 @@ const JobForm = ({ job, onClose, onSuccess }) => {
     }
   };
 
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -79,7 +83,7 @@ const JobForm = ({ job, onClose, onSuccess }) => {
   };
 
   const validateForm = () => {
-    const required = ['title', 'description', 'location', 'requirements', 'jobType', 'domain', 'searchType', 'startDate', 'endDate'];
+    const required = ['title', 'description', 'location', 'requirements', 'jobType', 'domain', 'startDate', 'endDate'];
     
     for (let field of required) {
       if (!formData[field]) {
@@ -122,7 +126,7 @@ const JobForm = ({ job, onClose, onSuccess }) => {
       requirements: 'Exigences',
       jobType: 'Type d\'emploi',
       domain: 'Domaine',
-      searchType: 'Type de recherche',
+
       startDate: 'Date de début',
       endDate: 'Date de fin'
     };
@@ -232,8 +236,12 @@ const JobForm = ({ job, onClose, onSuccess }) => {
                   required
                   disabled={loading}
                 >
-                  <option value="stage">Stage</option>
-                  <option value="alternance">Alternance</option>
+                  <option value="">Sélectionner un type</option>
+                  {searchTypes.map(type => (
+                    <option key={type._id} value={type._id}>
+                      {type.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -260,27 +268,6 @@ const JobForm = ({ job, onClose, onSuccess }) => {
             </div>
 
             <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="searchType">
-                  Type de recherche <span className="required">*</span>
-                </label>
-                <select
-                  id="searchType"
-                  name="searchType"
-                  value={formData.searchType}
-                  onChange={handleInputChange}
-                  required
-                  disabled={loading}
-                >
-                  <option value="">Sélectionner un type</option>
-                  {searchTypes.map(type => (
-                    <option key={type._id} value={type._id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               <div className="form-group">
                 <label htmlFor="salary">Salaire</label>
                 <input
