@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { Context } from '../../context';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import JobOffer from '../../components/jobOffer/JobOffer';
 import ApplicationForm from './ApplicationForm';
+import { useAriaAttributes, useFocusManager } from '../../components/accessibility/AccessibilityProvider';
 import './jobBoard.css';
 
 const JobBoard = () => {
   const { user } = useContext(AuthContext);
+  const { context } = useContext(Context);
   const [jobOffers, setJobOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -27,6 +30,9 @@ const JobBoard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const pages = Math.ceil(jobOffers.length / itemsPerPage);
+
+  const { getAriaAttributes } = useAriaAttributes();
+  const { focusById } = useFocusManager();
 
   useEffect(() => {
     fetchJobOffers();
@@ -110,6 +116,10 @@ const JobBoard = () => {
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
+    // Focus on the first job offer of the new page
+    setTimeout(() => {
+      focusById('job-offers-grid');
+    }, 100);
   };
 
   // Get current page items
@@ -131,7 +141,10 @@ const JobBoard = () => {
   if (loading) {
     return (
       <div className="job-board-public-container">
-        <div className="loading">Chargement des offres d'emploi...</div>
+        <div className="loading" role="status" aria-live="polite">
+          <span className="sr-only">Chargement en cours...</span>
+          Chargement des offres d'emploi...
+        </div>
       </div>
     );
   }
@@ -139,21 +152,25 @@ const JobBoard = () => {
   return (
     <div className="job-board-public-container">
       {/* Header Section */}
-      <div className="job-board-public-header">
-        <h1>Offres d'emploi</h1>
+      <header className="job-board-public-header">
+        <h1 id="page-title">Offres d'emploi</h1>
         <p>Trouvez votre prochaine opportunité professionnelle</p>
-      </div>
+      </header>
 
       {/* Filters Section */}
-      <section className="job-board-filters">
+      <section className="job-board-filters" aria-labelledby="filters-title">
         <div className="container">
+          <h2 id="filters-title" className="sr-only">Filtres de recherche</h2>
           <div className="filters-container">
             <div className="filters-row">
               <div className="filter-group">
+                <label htmlFor="domain-filter" className="sr-only">Filtrer par domaine</label>
                 <select
+                  id="domain-filter"
                   className="form-control"
                   value={filters.domain}
                   onChange={(e) => handleFilterChange('domain', e.target.value)}
+                  aria-label="Filtrer par domaine"
                 >
                   <option value="">Tous les domaines</option>
                   {domains.map(domain => (
@@ -165,12 +182,15 @@ const JobBoard = () => {
               </div>
 
               <div className="filter-group">
+                <label htmlFor="search-filter" className="sr-only">Rechercher par mot-clé</label>
                 <input
+                  id="search-filter"
                   type="text"
                   className="form-control"
                   placeholder="Rechercher par mot-clé..."
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
+                  aria-label="Rechercher par mot-clé"
                 />
               </div>
 
@@ -245,19 +265,29 @@ const JobBoard = () => {
           </div>
 
           {jobOffers.length === 0 ? (
-            <div className="no-results">
+            <div className="no-results" role="status" aria-live="polite">
               <p>Aucune offre d'emploi ne correspond à vos critères.</p>
             </div>
           ) : (
             <>
-              <div className="job-offers-grid">
-                {getCurrentPageItems().map(job => (
+              <div
+                id="job-offers-grid"
+                className="job-offers-grid"
+                aria-labelledby="results-title"
+                role="region"
+              >
+                <h2 id="results-title" className="sr-only">
+                  {jobOffers.length} offre{jobOffers.length > 1 ? 's' : ''} d'emploi trouvée{jobOffers.length > 1 ? 's' : ''}
+                </h2>
+                {getCurrentPageItems().map((job, index) => (
                   <JobOffer
                     key={job._id}
                     job={job}
                     onJobClick={handleJobClick}
                     onApplyClick={handleApplyClick}
                     user={user}
+                    aria-posinset={index + 1 + (currentPage - 1) * itemsPerPage}
+                    aria-setsize={jobOffers.length}
                   />
                 ))}
               </div>

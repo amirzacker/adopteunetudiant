@@ -7,13 +7,16 @@ import reportWebVitals from './reportWebVitals'
 import './index.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { AuthContextProvider } from './context/AuthContext'
+import { ContextProvider } from './context'
 
 
 ReactDOM.render(
     <BrowserRouter>
-      <AuthContextProvider>
-        <App/>
-      </AuthContextProvider>
+      <ContextProvider>
+        <AuthContextProvider>
+          <App/>
+        </AuthContextProvider>
+      </ContextProvider>
     </BrowserRouter>,
   document.getElementById('root'),
 )

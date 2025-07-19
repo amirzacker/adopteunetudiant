@@ -22,14 +22,22 @@ import Politique from './pages/politiqueDeConfid/Politique'
 import Mentions from './pages/mentionsLegales/Mentions'
 import Cgu from './pages/cgu/Cgu'
 import ForgotPassword from './pages/forgotPassword/ForgotPassword'
+import { AccessibilityProvider, SkipLink } from './components/accessibility/AccessibilityProvider'
+import AccessibilityToolbar from './components/accessibility/AccessibilityToolbar'
+import './styles/accessibility.css'
 
 function App () {
   //const { context } = useContext(Context)
   const { user } = useContext(AuthContext);
   return (
-    <div>
-      <MyNavbar/>
-        <Routes>
+    <AccessibilityProvider>
+      <div>
+        {/* Skip Links for Keyboard Navigation */}
+        <SkipLink href="#main-content">Aller au contenu principal</SkipLink>
+        <SkipLink href="#navigation">Aller à la navigation</SkipLink>
+
+        <MyNavbar/>
+          <Routes>
           <Route exact path="/" element={<Home/>}/>
           <Route path="/students" element={<Students/>}/>
           <Route path="/contact" element={<Contact/>}/>
@@ -74,8 +82,12 @@ function App () {
 
           <Route path="*" element={<NotFound/>}/>
         </Routes>
-      <Footer/>
-    </div>
+        <Footer/>
+
+        {/* Accessibility Toolbar */}
+        <AccessibilityToolbar />
+      </div>
+    </AccessibilityProvider>
   )
 }
 

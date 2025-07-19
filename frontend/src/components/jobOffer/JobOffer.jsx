@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Context } from '../../context';
+import { useAriaAttributes, useKeyboardNavigation } from '../accessibility/AccessibilityProvider';
 import './jobOffer.css';
 
-const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
+const JobOffer = ({ job, onJobClick, onApplyClick, user, ...ariaProps }) => {
   const [hasApplied, setHasApplied] = useState(false);
   const [checkingApplication, setCheckingApplication] = useState(false);
+  const { context } = useContext(Context);
+  const { getAriaAttributes } = useAriaAttributes();
+  const { handleKeyDown } = useKeyboardNavigation();
   // Check if user has already applied when component mounts
   useEffect(() => {
     if (user?.user?.isStudent && user?.token) {
@@ -74,13 +79,29 @@ const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
     return checkingApplication || hasApplied;
   };
 
+  const handleCardKeyDown = (e) => {
+    handleKeyDown(e, {
+      onActivate: () => onJobClick(job)
+    });
+  };
+
   return (
-    <div className="job-offer-card" onClick={() => onJobClick(job)}>
+    <article
+      className="job-offer-card"
+      onClick={() => onJobClick(job)}
+      onKeyDown={handleCardKeyDown}
+      tabIndex={0}
+      role="button"
+      {...getAriaAttributes({
+        label: `Offre d'emploi: ${job.title} chez ${job.company.name}. Cliquez pour voir les détails.`,
+        ...ariaProps
+      })}
+    >
       <div className="job-offer-header">
         <div className="company-logo">
-          <img 
-            src={`${process.env.REACT_APP_PUBLIC_FOLDER}${job.company.profilePicture}`} 
-            alt={job.company.name}
+          <img
+            src={`${process.env.REACT_APP_PUBLIC_FOLDER}${job.company.profilePicture}`}
+            alt={`Logo de ${job.company.name}`}
             onError={(e) => {
               e.target.src = `${process.env.REACT_APP_PUBLIC_FOLDER}pic2.jpg`;
             }}
@@ -125,19 +146,30 @@ const JobOffer = ({ job, onJobClick, onApplyClick, user }) => {
         </div>
         
         <div className="job-actions">
-          <button className="view-details-btn">
+          <button
+            className="view-details-btn"
+            {...getAriaAttributes({
+              label: `Voir les détails de l'offre ${job.title}`
+            })}
+          >
             Voir détails
           </button>
           <button
             className={`apply-btn ${hasApplied ? 'already-applied' : ''}`}
             onClick={handleApplyClick}
             disabled={isApplyButtonDisabled()}
+            {...getAriaAttributes({
+              label: hasApplied
+                ? `Vous avez déjà postulé pour ${job.title}`
+                : `Postuler pour ${job.title} chez ${job.company.name}`,
+              disabled: isApplyButtonDisabled()
+            })}
           >
             {getApplyButtonText()}
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

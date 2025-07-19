@@ -1,0 +1,382 @@
+/* Accessibility Styles for Job Board Application */
+/* Integrates with existing design system colors and patterns */
+
+/* ===== FONT SIZE VARIATIONS ===== */
+.font-small {
+  font-size: 14px;
+}
+
+.font-small h1 { font-size: 2rem; }
+.font-small h2 { font-size: 1.75rem; }
+.font-small h3 { font-size: 1.5rem; }
+.font-small h4 { font-size: 1.25rem; }
+.font-small h5 { font-size: 1.1rem; }
+.font-small h6 { font-size: 1rem; }
+.font-small p, .font-small span, .font-small div { font-size: 0.875rem; }
+.font-small .btn { font-size: 0.875rem; padding: 0.375rem 0.75rem; }
+
+.font-medium {
+  font-size: 16px; /* Default */
+}
+
+.font-large {
+  font-size: 18px;
+}
+
+.font-large h1 { font-size: 3.5rem; }
+.font-large h2 { font-size: 3rem; }
+.font-large h3 { font-size: 2.5rem; }
+.font-large h4 { font-size: 2rem; }
+.font-large h5 { font-size: 1.5rem; }
+.font-large h6 { font-size: 1.25rem; }
+.font-large p, .font-large span, .font-large div { font-size: 1.125rem; }
+.font-large .btn { font-size: 1.125rem; padding: 0.5rem 1rem; }
+
+.font-extra-large {
+  font-size: 20px;
+}
+
+.font-extra-large h1 { font-size: 4rem; }
+.font-extra-large h2 { font-size: 3.5rem; }
+.font-extra-large h3 { font-size: 3rem; }
+.font-extra-large h4 { font-size: 2.5rem; }
+.font-extra-large h5 { font-size: 2rem; }
+.font-extra-large h6 { font-size: 1.5rem; }
+.font-extra-large p, .font-extra-large span, .font-extra-large div { font-size: 1.25rem; }
+.font-extra-large .btn { font-size: 1.25rem; padding: 0.625rem 1.25rem; }
+
+/* ===== HIGH CONTRAST MODE ===== */
+.high-contrast {
+  --primary-color: #000000;
+  --secondary-color: #FFFFFF;
+  --accent-color: #E35226;
+  --error-color: #FF0000;
+  --success-color: #00FF00;
+  --warning-color: #FFA500;
+  --text-color: #000000;
+  --background-color: #FFFFFF;
+  --border-color: #000000;
+  --link-color: #E35226;
+  --link-visited-color: #B8421C;
+}
+
+.high-contrast body {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+.high-contrast .navbar,
+.high-contrast .bg-dark {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .navbar .nav-link,
+.high-contrast .navbar a,
+.high-contrast .link--thebe {
+  color: var(--accent-color) !important;
+}
+
+.high-contrast .navbar .nav-link:hover,
+.high-contrast .navbar a:hover,
+.high-contrast .link--thebe:hover {
+  color: var(--secondary-color) !important;
+  background-color: var(--accent-color) !important;
+}
+
+.high-contrast .btn-primary,
+.high-contrast .btn {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .btn:hover {
+  background-color: var(--secondary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.high-contrast .card,
+.high-contrast .job-offer-card,
+.high-contrast .modal-content {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .table {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .table th,
+.high-contrast .table td {
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+.high-contrast .table-striped tbody tr:nth-of-type(odd) {
+  background-color: #F0F0F0 !important;
+}
+
+.high-contrast .form-control,
+.high-contrast input,
+.high-contrast textarea,
+.high-contrast select {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .form-control:focus,
+.high-contrast input:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.2rem var(--accent-color) !important;
+}
+
+.high-contrast a {
+  color: var(--link-color) !important;
+}
+
+.high-contrast a:visited {
+  color: var(--link-visited-color) !important;
+}
+
+.high-contrast a:hover {
+  color: var(--accent-color) !important;
+  text-decoration: underline !important;
+}
+
+/* Footer specific styles */
+.high-contrast .footer,
+.high-contrast footer {
+  background-color: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+  border-top: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .footer a,
+.high-contrast footer a {
+  color: var(--accent-color) !important;
+}
+
+.high-contrast .footer a:hover,
+.high-contrast footer a:hover {
+  color: var(--secondary-color) !important;
+  background-color: var(--accent-color) !important;
+}
+
+/* Job board specific styles */
+.high-contrast .job-board-public-header {
+  background: var(--primary-color) !important;
+  color: var(--secondary-color) !important;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .job-offer-card {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color) !important;
+  border: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .job-offer-card:hover {
+  border-color: var(--accent-color) !important;
+}
+
+/* Dashboard specific styles */
+.high-contrast .sidebar {
+  background-color: var(--primary-color) !important;
+  border-right: 2px solid var(--border-color) !important;
+}
+
+.high-contrast .sidebar a {
+  color: var(--accent-color) !important;
+}
+
+.high-contrast .sidebar a:hover {
+  background-color: var(--accent-color) !important;
+  color: var(--secondary-color) !important;
+}
+
+/* Removed reduced motion styles - not needed */
+
+/* ===== FOCUS INDICATORS ===== */
+/* Basic focus indicators for all interactive elements */
+button:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus {
+  outline: 2px solid #E35226 !important;
+  outline-offset: 2px !important;
+}
+
+.high-contrast button:focus,
+.high-contrast a:focus,
+.high-contrast input:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus,
+.high-contrast [tabindex]:focus {
+  outline: 2px solid var(--accent-color) !important;
+  outline-offset: 2px !important;
+}
+
+/* ===== SKIP LINKS ===== */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #E35226;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+.high-contrast .skip-link {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--accent-color);
+}
+
+/* ===== SCREEN READER UTILITIES ===== */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+/* ===== ACCESSIBILITY TOOLBAR ===== */
+.accessibility-toolbar {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: white;
+  border: 2px solid #E35226;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  max-width: 280px;
+  min-width: 250px;
+}
+
+.high-contrast .accessibility-toolbar {
+  background: var(--secondary-color);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.accessibility-toolbar h3 {
+  margin: 0 0 15px 0;
+  color: #E35226;
+  font-size: 1.2rem;
+}
+
+.high-contrast .accessibility-toolbar h3 {
+  color: var(--text-color);
+}
+
+.accessibility-toolbar .form-group {
+  margin-bottom: 15px;
+}
+
+.accessibility-toolbar label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.accessibility-toolbar button {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: #f8f9fa;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.accessibility-toolbar button:hover {
+  background: #e9ecef;
+}
+
+.accessibility-toolbar button.active {
+  background: #E35226;
+  color: white;
+  border-color: #E35226;
+}
+
+.high-contrast .accessibility-toolbar button.active {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border-color: var(--border-color);
+}
+
+.accessibility-toolbar-toggle {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: #E35226;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10001;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.high-contrast .accessibility-toolbar-toggle {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--accent-color);
+}
+
+.accessibility-toolbar-toggle:hover {
+  background: #c44621;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.high-contrast .accessibility-toolbar-toggle {
+  background: var(--accent-color);
+  color: var(--secondary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.high-contrast .accessibility-toolbar-toggle:hover {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: var(--accent-color);
+}
