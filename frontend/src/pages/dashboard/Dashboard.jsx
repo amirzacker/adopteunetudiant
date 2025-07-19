@@ -74,6 +74,27 @@ export default function Dashboard() {
 							<i className="fas fa-users"></i>
 						</Link>
 					</li>
+					{user?.user?.isCompany && (
+						<li className="job-board-icon">
+							<Link to="/company-jobs">
+								<i className="fas fa-briefcase"></i>
+							</Link>
+						</li>
+					)}
+					{user?.user?.isStudent && (
+						<li className="applications-icon">
+							<Link to="/my-applications">
+								<i className="fas fa-file-alt"></i>
+							</Link>
+						</li>
+					)}
+					{user?.user?.isCompany && (
+						<li className="applications-icon">
+							<Link to="/company-applications">
+								<i className="fas fa-file-alt"></i>
+							</Link>
+						</li>
+					)}
 					<li className="bell-icon">
 						<Link to="#">
 							<i className="fas fa-bell"></i>

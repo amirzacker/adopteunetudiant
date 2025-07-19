@@ -1,6 +1,7 @@
 import './home.css'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import JobOffersPreview from './JobOffersPreview'
 
 
 
@@ -121,20 +122,51 @@ function HomeComponent () {
               </a>
             </div>
             <div className="col-6 col-sm-6 col-md-3 col-xl-3">
-              <a href="/trouver-un-job">
+              <Link to="/job-board">
                 <img src="/assets/img/adoptehome1.jpeg" alt="Trouver un job" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
                 <p>Trouver<br/>un stage</p>
-              </a>
+              </Link>
             </div>
             <div className="col-6 col-sm-6 col-md-3 col-xl-3">
-              <a href="/alternance">
+              <Link to="/job-board">
                 <img src="/assets/img/adoptehome4.jpeg" alt="Me former en alternance" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
                 <p>Trouver une alternance</p>
-              </a>
+              </Link>
             </div>
         </div>
     </div>
 </section>
+
+<section className="section-4">
+    <div className="container">
+        <div className="row">
+            <div className="col-md-12">
+                <h2>POUR LES ENTREPRISES</h2>
+            </div>
+            <div className="col-6 col-sm-6 col-md-4 col-xl-4">
+              <Link to="/students">
+                <img src="/assets/img/adoptehome3.jpeg" alt="Parcourir les profils" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
+                <p>Parcourir les profils étudiants</p>
+              </Link>
+            </div>
+            <div className="col-6 col-sm-6 col-md-4 col-xl-4">
+              <Link to="/company-jobs">
+                <img src="/assets/img/adoptehome2.jpeg" alt="Publier des offres" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
+                <p>Publier des offres d'emploi</p>
+              </Link>
+            </div>
+            <div className="col-6 col-sm-6 col-md-4 col-xl-4">
+              <Link to="/registerCompany">
+                <img src="/assets/img/adoptehome1.jpeg" alt="Rejoindre" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
+                <p>Rejoindre la plateforme</p>
+              </Link>
+            </div>
+        </div>
+    </div>
+</section>
+
+{/* Job Offers Preview Section */}
+<JobOffersPreview />
 
 
     </div>

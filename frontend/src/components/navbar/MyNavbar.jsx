@@ -24,6 +24,7 @@ const { user } = useContext(AuthContext);
           <Nav className="ml-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/students">Students</Nav.Link>
+            <Nav.Link as={Link} to="/job-board">Offres d'emploi</Nav.Link>
             <Nav.Link as={Link} to="/contact">Contactez Nous</Nav.Link>
             <Nav.Link as={Link} to="/about-us">A propos</Nav.Link>
             <div className="login-container1">
@@ -52,6 +53,9 @@ const { user } = useContext(AuthContext);
 
                         <li className="nav-item navbarhover">
                             <Link className="link link--thebe" to="/students">Students</Link>
+                        </li>
+                        <li className="nav-item navbarhover">
+                            <Link className="link link--thebe" to="/job-board">Offres d'emploi</Link>
                         </li>
                         <li className="nav-item navbarhover">
                             <Link className="link link--thebe" to="/contact">Contactez Nous</Link>

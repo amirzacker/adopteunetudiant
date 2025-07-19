@@ -7,6 +7,8 @@ const searchTypesSchema = require("../searchTypes/searchTypes.schema");
 const usersModel = require("../users/users.model");
 const contractSchema = require("../contracts/contracts.model");
 const adoptionSchema = require("../adoptions/adoptions.model");
+const jobOfferSchema = require("../jobOffers/jobOffers.model");
+const jobApplicationSchema = require("../jobApplications/jobApplications.model");
 
 AdminBro.registerAdapter(AdminBroMongoose);
 
@@ -73,6 +75,24 @@ const options = {
         navigation: {
           name: 'Domain',
           icon: 'List',
+        },
+      },
+    },
+    {
+      resource: jobOfferSchema,
+      options: {
+        navigation: {
+          name: 'Job Offers',
+          icon: 'Briefcase',
+        },
+      },
+    },
+    {
+      resource: jobApplicationSchema,
+      options: {
+        navigation: {
+          name: 'Job Applications',
+          icon: 'FileText',
         },
       },
     },

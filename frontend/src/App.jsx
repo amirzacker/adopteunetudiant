@@ -11,6 +11,10 @@ import RegisterStudent from './pages/registerStudent/RegisterStudent'
 import RegisterCompany from './pages/registerCompany/RegisterCompany'
 import Dashboard from './pages/dashboard/Dashboard'
 import Messenger from './pages/messenger/Messenger';
+import JobBoard from './pages/jobBoard/JobBoard';
+import CompanyJobs from './pages/companyJobs/CompanyJobs';
+import CompanyApplications from './pages/companyApplications/CompanyApplications';
+import MyApplications from './pages/myApplications/MyApplications';
 import { AuthContext } from "./context/AuthContext";
 import Contact from './pages/contact/Contact'
 import AboutUs from './pages/aboutAs/AboutUs'
@@ -48,10 +52,26 @@ function App () {
           {!user ? <Route path="/messenger" element={<Navigate to="/login" />}/>  : 
           <Route path="/messenger" element={<Messenger/>}/>
           }
-          {!user ? <Route path="/dashboard" element={<Navigate to="/login" />}/>  : 
+          {!user ? <Route path="/dashboard" element={<Navigate to="/login" />}/>  :
           <Route path="/dashboard" element={<Dashboard/>}/>
           }
-      
+
+          {/* Job Board Routes */}
+          <Route path="/job-board" element={<JobBoard/>}/>
+
+          {/* Company Dashboard Routes */}
+          {!user ? <Route path="/company-jobs" element={<Navigate to="/login" />}/>  :
+          <Route path="/company-jobs" element={<CompanyJobs/>}/>
+          }
+          {!user ? <Route path="/company-applications" element={<Navigate to="/login" />}/>  :
+          <Route path="/company-applications" element={<CompanyApplications/>}/>
+          }
+
+          {/* Student Dashboard Routes */}
+          {!user ? <Route path="/my-applications" element={<Navigate to="/login" />}/>  :
+          <Route path="/my-applications" element={<MyApplications/>}/>
+          }
+
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       <Footer/>

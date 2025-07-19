@@ -145,21 +145,22 @@ body {
 .fa-house-user,
 .fa-users,
 .fa-comment,
-.fa-bell {
+.fa-bell,
+.fa-briefcase,
+.fa-file-alt {
     font-size: 40px;
     color: #E35226;
     width: 100%;
 }
 
-#logout-icon {
-    margin-top: 300px;
-}
 
 .home-icon,
 .home-icon-chat,
 .users-icon,
 .messages-icon,
-.bell-icon {
+.bell-icon,
+.job-board-icon,
+.applications-icon {
     display: flex;
     justify-content: center;
     border-radius: 40px 0 0 40px;
@@ -170,7 +171,9 @@ body {
 .users-icon:hover,
 .home-icon-chat:hover,
 .messages-icon:hover,
-.bell-icon:hover {
+.bell-icon:hover,
+.job-board-icon:hover,
+.applications-icon:hover {
     background-color: #F2F8F1;
     border-radius: 40px 0 0 40px;
     color: #262D2A;
@@ -181,7 +184,9 @@ body {
 .fa-comment:hover,
 .fa-house-user:hover,
 .fa-users:hover,
-.fa-bell:hover {
+.fa-bell:hover,
+.fa-briefcase:hover,
+.fa-file-alt:hover {
     color: #E35226;
     transition: 0.3s;
 }

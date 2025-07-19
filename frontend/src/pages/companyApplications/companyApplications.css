@@ -1,0 +1,64 @@
+/* Import dashboard styles */
+@import '../dashboard/dashboard.css';
+
+/* Company Applications Header Card */
+.company-applications-header-card {
+  padding: 2rem 0 2rem 2rem;
+  background-color: white;
+  width: 100%;
+  height: 150px;
+  border-radius: 20px;
+  margin: 2rem 2rem 2rem 2rem;
+  box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.company-applications-header-card h4 {
+  color: #E35226;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.company-applications-header-card p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+/* Applications Content Card */
+.applications-content-card {
+  padding: 2rem 0 2rem 2rem;
+  background-color: white;
+  width: 100%;
+  border-radius: 20px;
+  margin: 2rem 2rem 2rem 2rem;
+  box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+  min-height: 400px;
+}
+
+/* Access Denied Card */
+.access-denied-card {
+  padding: 2rem 0 2rem 2rem;
+  background-color: white;
+  width: 100%;
+  height: 200px;
+  border-radius: 20px;
+  margin: 2rem 2rem 2rem 2rem;
+  box-shadow: 20px 20px 40px -2px rgba(0, 0, 0, .5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.access-denied-card h4 {
+  color: #e74c3c;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.access-denied-card p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}

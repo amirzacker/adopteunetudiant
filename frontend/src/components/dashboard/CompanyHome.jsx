@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IconButton, Dialog,
@@ -14,13 +14,16 @@ import Pourcentage from "./Pourcentage";
 import EditIcon from '@material-ui/icons/Edit';
 import EditProfilCompany from "./EditProfilCompany";
 import EditPassword from "./EditPassword";
-export default function CompanyHome({ currentUser }) {
- 
-  const [open, setOpen] = useState(false);
+import { AuthContext } from "../../context/AuthContext";
 
-  const [user, setUser] = useState(null);
+export default function CompanyHome({ currentUser }) {
+  const [open, setOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
   const [openProfil, setOpenProfil] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
+  const [stats, setStats] = useState({});
+  const { user: authUser } = useContext(AuthContext);
+
 
     useEffect(() => {
         const source = axios.CancelToken.source();
@@ -30,7 +33,7 @@ export default function CompanyHome({ currentUser }) {
                 const res = await axios.get("/api/users/" + currentUser?.user?._id, {
                     cancelToken: source.token
                 });
-                setUser(res.data);
+                setUserProfile(res.data);
             } catch (err) {
                 if (!axios.isCancel(err)) {
                     console.log(err);
@@ -40,6 +43,7 @@ export default function CompanyHome({ currentUser }) {
 
         if (currentUser?.user?._id) {
             getUser();
+            fetchStats();
         }
 
         return () => {
@@ -53,15 +57,38 @@ export default function CompanyHome({ currentUser }) {
   const handleDeleteCompte = async (e) => {
     try {
         // Submit the form
-        await axios.delete("/api/users/" + user?._id, { headers: {"x-access-token" : token} });
+        await axios.delete("/api/users/" + userProfile?._id, { headers: {"x-access-token" : token} });
         // after delete remove  localStorage
         localStorage.removeItem('user');
         //and reload page to deconnecte
         window.location.reload();
- 
+
     } catch (err) {console.log(err)}
-   
+
   };
+
+    const fetchStats = async () => {
+        try {
+            if (!currentUser?.user?.id && !currentUser?.user?._id) {
+                return;
+            }
+
+            if (!currentUser?.token) {
+                return;
+            }
+
+            const userId = currentUser.user._id || currentUser.user.id;
+
+            const response = await axios.get(`/api/jobOffers/company/${userId}/stats`, {
+                headers: {
+                    'x-access-token': currentUser.token
+                }
+            });
+            setStats(response.data);
+        } catch (err) {
+            console.error('Error fetching stats:', err);
+        }
+    };
 
 
   return (
@@ -69,14 +96,14 @@ export default function CompanyHome({ currentUser }) {
     
     <div className="dash-partition-header-student">
 			<div className="partition-header-profil">
-				<h4>Hello 
-					{" "} {user?.name}</h4>
-				<h5>Profil renseigné à <Pourcentage currentUser={user}/> </h5>
+				<h4>Hello
+					{" "} {userProfile?.name}</h4>
+				<h5>Profil renseigné à <Pourcentage currentUser={userProfile}/> </h5>
 				<h6>
         <Dialog open={openPassword} onClose={() => setOpenPassword(false)}>
         <DialogTitle>Update password</DialogTitle>
         <DialogContent>
-           <EditPassword currentUser={user} token={token} />
+           <EditPassword currentUser={userProfile} token={token} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenPassword(false)}>
@@ -96,14 +123,14 @@ export default function CompanyHome({ currentUser }) {
       <Dialog open={openProfil} onClose={() => setOpenProfil(false)}>
         <DialogTitle>Update profil</DialogTitle>
         <DialogContent>
-         Mise à jour du profil  <EditProfilCompany currentUser={user} token={token} />
+         Mise à jour du profil  <EditProfilCompany currentUser={userProfile} token={token} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenProfil(false)}>
             <Cancel />
             Annulez
           </Button>
-          
+
         </DialogActions>
       </Dialog>
 		</div>
@@ -141,8 +168,29 @@ export default function CompanyHome({ currentUser }) {
 <br/>
 	<div className="dash-partition-description">
 		<h4>description</h4>
-		<h5>{user?.desc}</h5>
+		<h5>{userProfile?.desc}</h5>
 	</div>
+        <div className="stats-dashboard-card">
+            <h4>Statistiques</h4>
+            <div className="stats-grid">
+                <div className="stat-card">
+                    <div className="stat-number">{stats.total || 0}</div>
+                    <div className="stat-label">Total des offres</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-number">{stats.published || 0}</div>
+                    <div className="stat-label">Offres publiées</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-number">{stats.draft || 0}</div>
+                    <div className="stat-label">Brouillons</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-number">{stats.totalApplications || 0}</div>
+                    <div className="stat-label">Candidatures reçues</div>
+                </div>
+            </div>
+        </div>
 
     </div>
   );
