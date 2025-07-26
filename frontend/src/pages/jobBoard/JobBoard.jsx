@@ -363,7 +363,6 @@ const JobDetailModal = ({ job, onClose, onApply, user }) => {
     // Use _id instead of id for consistency
     const userId = user.user._id || user.user.id;
     if (!userId) {
-      console.error('User ID not found');
       return;
     }
 

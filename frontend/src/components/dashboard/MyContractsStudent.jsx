@@ -1,21 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import { useCallback } from "react";
-import FlashMessage from "../alert/FlashMessage";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 
 export default function MyContractsStudent({ currentUser }) {
   const [contracts, setContract] = useState([]);
 
-
-  const [success, setSuccess] = useState(false);
-
-  const [message, setMessage] = useState("");
-
   const [selectedContract, setSelectedContract] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   const [searchStatus, setSearchStatus] = useState("");
   const handleSatus = useCallback(
@@ -33,12 +25,10 @@ export default function MyContractsStudent({ currentUser }) {
   }, [searchStatus, contracts]);
   const handleCloseModal = () => {
     setSelectedContract(null);
-    setShowModal(false);
   };
 
   const handleShowModal = (contract) => {
     setSelectedContract(contract);
-    setShowModal(true);
   };
 
 
@@ -53,13 +43,11 @@ export default function MyContractsStudent({ currentUser }) {
           headers: { "x-access-token": currentUser.token },
           cancelToken: source.token
         });
-        //setAdoption(res.data);
         setContract(
           res.data.filter((contract) => contract.status !== "pending")
         );
-        //console.log(res);
       } catch (err) {
-        console.log(err);
+        // Error handled silently
       }
     };
     getAdoptions();
@@ -76,8 +64,6 @@ export default function MyContractsStudent({ currentUser }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  //console.log(currentUser?.token);
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

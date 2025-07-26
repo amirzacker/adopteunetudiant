@@ -80,7 +80,7 @@ const CompanyJobs = () => {
       });
       fetchJobOffers();
     } catch (err) {
-      alert('Erreur lors de la suppression de l\'offre d\'emploi');
+      setError('Erreur lors de la suppression de l\'offre d\'emploi');
       console.error('Error deleting job offer:', err);
     }
   };
@@ -94,7 +94,7 @@ const CompanyJobs = () => {
       });
       fetchJobOffers();
     } catch (err) {
-      alert('Erreur lors de la publication de l\'offre d\'emploi');
+      setError('Erreur lors de la publication de l\'offre d\'emploi');
       console.error('Error publishing job offer:', err);
     }
   };
@@ -108,7 +108,7 @@ const CompanyJobs = () => {
       });
       fetchJobOffers();
     } catch (err) {
-      alert('Erreur lors de la fermeture de l\'offre d\'emploi');
+      setError('Erreur lors de la fermeture de l\'offre d\'emploi');
       console.error('Error closing job offer:', err);
     }
   };

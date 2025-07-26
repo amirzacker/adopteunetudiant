@@ -1,15 +1,13 @@
 import './navbar.css'
 import React, { useContext } from 'react';
-import { Navbar, Nav, Image, Button } from 'react-bootstrap';
+import { Navbar, Nav, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/AuthContext';
-import { Context } from '../../context';
 import { useAriaAttributes } from '../accessibility/AccessibilityProvider';
 
 function MyNavbar () {
 const { user } = useContext(AuthContext);
-const { context } = useContext(Context);
 const { getAriaAttributes } = useAriaAttributes();
 
   return (

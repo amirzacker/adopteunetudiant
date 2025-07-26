@@ -67,9 +67,8 @@ export default function AdoptionCompany({ currentUser }) {
       setMessage("adoption annulé avec succes ");
       setSuccess(true);
 
-
     } catch (err) {
-      console.log(err);
+      // Error handled silently
     }
     handleCloseAcceptModal();
 
@@ -87,9 +86,8 @@ export default function AdoptionCompany({ currentUser }) {
         setAdoption(
           res.data.filter((adoption) => adoption.status !== "accepted")
         );
-        //console.log(res);
       } catch (err) {
-        console.log(err);
+        // Error handled silently
       }
     };
     getAdoptions();
@@ -105,8 +103,6 @@ export default function AdoptionCompany({ currentUser }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  //console.log(currentUser?.token);
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

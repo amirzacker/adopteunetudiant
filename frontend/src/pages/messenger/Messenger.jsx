@@ -47,7 +47,7 @@ export default function Messenger() {
         });
         setConversations(res.data);
       } catch (err) {
-        console.log(err);
+        // Error handled silently - user will see empty conversations list
       }
     };
     getConversations();
@@ -61,7 +61,7 @@ export default function Messenger() {
         });
         setMessages(res.data);
       } catch (err) {
-        console.log(err);
+        // Error handled silently - user will see empty messages
       }
     };
     getMessages();
@@ -92,7 +92,7 @@ export default function Messenger() {
       setMessages([...messages, res.data]);
       setNewMessage("");
     } catch (err) {
-      console.log(err);
+      // Error handled silently - message sending failed
     }
   };
 

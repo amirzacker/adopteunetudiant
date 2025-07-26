@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import { useCallback } from "react";
 import FlashMessage from "../alert/FlashMessage";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 
 export default function MyContractsCompany({ currentUser }) {
   const [contracts, setContract] = useState([]);
@@ -15,7 +15,6 @@ export default function MyContractsCompany({ currentUser }) {
   const [message, setMessage] = useState("");
 
   const [selectedContract, setSelectedContract] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedContractForCancel, setSelectedContractForCancel] =
   useState(null);
@@ -36,12 +35,10 @@ export default function MyContractsCompany({ currentUser }) {
   }, [searchStatus, contracts]);
   const handleCloseModal = () => {
     setSelectedContract(null);
-    setShowModal(false);
   };
 
   const handleShowModal = (contract) => {
     setSelectedContract(contract);
-    setShowModal(true);
   };
 
 
@@ -68,7 +65,7 @@ export default function MyContractsCompany({ currentUser }) {
       setMessage(" contrat annulé avec succes");
       setSuccess(true);
     } catch (err) {
-      console.log(err);
+      // Error handled silently
     }
     handleCloseAcceptModal();
   };
@@ -90,9 +87,8 @@ export default function MyContractsCompany({ currentUser }) {
         setContract(
           res.data
         );
-        //console.log(res);
       } catch (err) {
-        console.log(err);
+        // Error handled silently
       }
     };
     getAdoptions();
@@ -109,8 +105,6 @@ export default function MyContractsCompany({ currentUser }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  //console.log(currentUser?.token);
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

@@ -1,22 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import { useCallback } from "react";
-import FlashMessage from "../alert/FlashMessage";
-import { Table, Button, Modal, Form } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 
 export default function MyAdoptionStudent({ currentUser }) {
   const [adoptions, setAdoption] = useState([]);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
-
-  const [success, setSuccess] = useState(false);
-
-  const [message, setMessage] = useState("");
-
   const [selectedAdoption, setSelectedAdoption] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
     useState(null);
 
@@ -38,13 +30,10 @@ export default function MyAdoptionStudent({ currentUser }) {
 
   const handleCloseModal = () => {
     setSelectedAdoption(null);
-    setShowModal(false);
   };
-
 
   const handleShowModal = (adoption) => {
     setSelectedAdoption(adoption);
-    setShowModal(true);
   };
 
 
@@ -61,12 +50,11 @@ export default function MyAdoptionStudent({ currentUser }) {
         setAdoption(
           res.data.filter((adoption) => adoption.status !== "pending")
         );
-        //console.log(res);
       } catch (err) {
         if (axios.isCancel(err)) {
           console.log("Request canceled");
         } else {
-          console.log(err);
+          // Error handled silently
         }
       }
     };
@@ -85,8 +73,6 @@ export default function MyAdoptionStudent({ currentUser }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  //console.log(currentUser?.token);
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

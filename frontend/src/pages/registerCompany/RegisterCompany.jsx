@@ -160,8 +160,12 @@ export default function RegisterCompany() {
                     <div className="invalid-feedback">{errors.cpassword?.message}</div>
                 </div>
                 <div className="form-group">
-                    <label className="form-label">J'ai lu et j'accepte  <Link to="/cgu">les conditions</Link></label>
-                    <input type="checkbox" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''} `} {...register('acceptTerms')} style={{padding: "10px", margin: "0px 0px 10px 10px" }} name="acceptTerms" />
+                    <div className="form-check">
+                        <input type="checkbox" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} {...register('acceptTerms')} name="acceptTerms" id="acceptTerms" />
+                        <label className="form-check-label" htmlFor="acceptTerms">
+                            J'ai lu et j'accepte <Link to="/cgu">les conditions</Link>
+                        </label>
+                    </div>
                     <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
                 </div>
 

@@ -17,7 +17,7 @@ export default function Message({ message, own , currentUser }) {
         const res = await axios.get("/api/users/" + message?.sender);
         setUser(res.data);
       } catch (err) {
-        console.log(err);
+        // Error handled silently
       }
     };
     getUser();

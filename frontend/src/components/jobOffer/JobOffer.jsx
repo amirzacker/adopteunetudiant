@@ -1,23 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Context } from '../../context';
 import { useAriaAttributes, useKeyboardNavigation } from '../accessibility/AccessibilityProvider';
 import './jobOffer.css';
 
 const JobOffer = ({ job, onJobClick, onApplyClick, user, ...ariaProps }) => {
   const [hasApplied, setHasApplied] = useState(false);
   const [checkingApplication, setCheckingApplication] = useState(false);
-  const { context } = useContext(Context);
   const { getAriaAttributes } = useAriaAttributes();
   const { handleKeyDown } = useKeyboardNavigation();
-  // Check if user has already applied when component mounts
-  useEffect(() => {
-    if (user?.user?.isStudent && user?.token) {
-      checkIfApplied();
-    }
-  }, [user, job._id]);
-
-  const checkIfApplied = async () => {
+  const checkIfApplied = useCallback(async () => {
     if (!user?.user?.isStudent || !user?.token) return;
 
     // Use _id instead of id for consistency
@@ -44,7 +35,14 @@ const JobOffer = ({ job, onJobClick, onApplyClick, user, ...ariaProps }) => {
     } finally {
       setCheckingApplication(false);
     }
-  };
+  }, [user, job._id]);
+
+  // Check if user has already applied when component mounts
+  useEffect(() => {
+    if (user?.user?.isStudent && user?.token) {
+      checkIfApplied();
+    }
+  }, [user, job._id, checkIfApplied]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('fr-FR');

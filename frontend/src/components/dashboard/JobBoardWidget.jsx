@@ -21,7 +21,6 @@ const JobBoardWidget = () => {
   const fetchRecommendedJobs = async () => {
     try {
       if ((!user?.user?.id && !user?.user?._id) || !user?.token) {
-        console.log('Missing user data for recommended jobs');
         return;
       }
 
@@ -40,7 +39,6 @@ const JobBoardWidget = () => {
   const fetchMyApplications = async () => {
     try {
       if ((!user?.user?.id && !user?.user?._id) || !user?.token) {
-        console.log('Missing user data for applications');
         return;
       }
 
@@ -59,7 +57,6 @@ const JobBoardWidget = () => {
   const fetchStats = async () => {
     try {
       if ((!user?.user?.id && !user?.user?._id) || !user?.token) {
-        console.log('Missing user data for stats');
         setLoading(false);
         return;
       }

@@ -56,7 +56,7 @@ export default function ContractsStudent({ currentUser }) {
       setSuccess(true);
 
     } catch (err) {
-      console.log(err);
+      // Error handled silently
     }
     handleCloseAcceptModal();
   };
@@ -74,9 +74,8 @@ export default function ContractsStudent({ currentUser }) {
         setContract(
           res.data.filter((contract) => contract.status === "pending")
         );
-        //console.log(res);
       } catch (err) {
-        console.log(err);
+        // Error handled silently
       }
     };
     getAdoptions();
@@ -93,8 +92,6 @@ export default function ContractsStudent({ currentUser }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  //console.log(currentUser?.token);
 
   const handleChange = (event, page) => {
     setCurrentPage(page);

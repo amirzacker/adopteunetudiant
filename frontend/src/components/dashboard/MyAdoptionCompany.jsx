@@ -2,12 +2,8 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
-import { useCallback } from "react";
 import FlashMessage from "../alert/FlashMessage";
-import { Table, Button, Modal, Form } from "react-bootstrap";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { Button, Modal, Form } from "react-bootstrap";
 
 export default function MyAdoptionCompany({ currentUser }) {
   const [adoptions, setAdoption] = useState([]);
@@ -17,7 +13,6 @@ export default function MyAdoptionCompany({ currentUser }) {
   const [message, setMessage] = useState("");
 
   const [selectedAdoption, setSelectedAdoption] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [selectedAdoptionForContract, setSelectedAdoptionForContract] =
     useState(null);
@@ -26,23 +21,8 @@ export default function MyAdoptionCompany({ currentUser }) {
   const endDate = useRef();
   const terms = useRef();
 
-  const yupValidation = Yup.object().shape({
-    startDate: Yup.date().required("Choisissez une date de début"),
-    endDate: Yup.date().required("Choisissez une date de fin"),
-    terms: Yup.string().required("Termes requis"),
-    acceptTerms: Yup.bool().oneOf(
-      [true],
-      "Accepter les conditions est obligatoire"
-    ),
-  });
-
-  const formOptions = { resolver: yupResolver(yupValidation) };
-  const { register, handleSubmit, reset, formState } = useForm(formOptions);
-  const { errors } = formState;
-
   const handleCloseModal = () => {
     setSelectedAdoption(null);
-    setShowModal(false);
   };
 
   const handleCloseAcceptModal = () => {
@@ -52,7 +32,6 @@ export default function MyAdoptionCompany({ currentUser }) {
 
   const handleShowModal = (adoption) => {
     setSelectedAdoption(adoption);
-    setShowModal(true);
   };
 
   const handleCancel = (adoption) => {

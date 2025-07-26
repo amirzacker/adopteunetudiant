@@ -37,16 +37,17 @@ export default function Login() {
                 <input type="email" name="email" placeholder="Email" ref={email} onChange={(e) => (e.target.value)} required/><br/>
                 <input type="password" name="password" placeholder="Mot de passe" required minLength="6" ref={password}/><br/>
                 {authError && <div className="alert alert-danger">{authError}</div>}
-                <input type="submit" name="submit" value="Connexion" disabled={isFetching} /> 
-                {isFetching ? (
-                <CircularProgress color="secondary" size="30px" />
-              ) : (
-                ""
-              )}
-                <br/>
-              <Link to="/forgot-password">Mot de passe oublié?</Link><br/>
-              <Link to="/registerStudent">Vous etes un nouveau étudiant?</Link><br/>
-              <Link to="/registerCompany">une entreprise?</Link>
+                <input type="submit" name="submit" value="Connexion" disabled={isFetching} />
+                {isFetching && (
+                  <div className="login-loading">
+                    <CircularProgress color="secondary" size="24px" />
+                  </div>
+                )}
+                <div className="login-links">
+                  <Link to="/forgot-password">Mot de passe oublié?</Link>
+                  <Link to="/registerStudent">Vous êtes un nouveau étudiant?</Link>
+                  <Link to="/registerCompany">Une entreprise?</Link>
+                </div>
             </form>
         </div>
     </div>
