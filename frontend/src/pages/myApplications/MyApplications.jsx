@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
+import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import './myApplications.css';
 
 const MyApplications = () => {
@@ -109,52 +110,19 @@ const MyApplications = () => {
     );
   }
 
+  const Logout = () => {
+    localStorage.removeItem('user');
+    window.location.reload();
+  };
+
   return (
     <main>
-      <div className="sidebar">
-        <ul>
-          <div className="student-avatar-container">
-            <li className="student-avatar-dashboard">
-              <img src={`${user?.user?.profilePicture ? process.env.REACT_APP_PUBLIC_FOLDER + user?.user?.profilePicture : process.env.REACT_APP_PUBLIC_FOLDER + "pic2.jpg"}`} alt="avatar-student"/>
-            </li>
-          </div>
-          <div className="center-icons-dashboard">
-            <li className="home-icon">
-              <a href="/dashboard">
-                <i className="fas fa-house-user"></i>
-              </a>
-            </li>
-            <li className="messages-icon">
-              <a href="/messenger">
-                <i className="fas fa-comment"></i>
-              </a>
-            </li>
-            <li className="users-icon">
-              <a href="/dashboard">
-                <i className="fas fa-users"></i>
-              </a>
-            </li>
-            <li className="job-board-icon">
-              <a href="/job-board">
-                <i className="fas fa-briefcase"></i>
-              </a>
-            </li>
-            <li className="applications-icon" style={{backgroundColor: '#F2F8F1', borderRadius: '40px 0 0 40px', paddingLeft: '10px'}}>
-              <a href="/my-applications">
-                <i className="fas fa-file-alt" style={{color: '#262D2A'}}></i>
-              </a>
-            </li>
-            <li className="bell-icon">
-              <a href="#">
-                <i className="fas fa-bell"></i>
-              </a>
-            </li>
-            <li>
-              <a href="/dashboard"><img src="/assets/svg/iconnavdashboard/deconnexion.svg" alt="deconnexion" id="logout-icon"/></a>
-            </li>
-          </div>
-        </ul>
-      </div>
+      <DashboardSidebar
+        user={user}
+        PF={process.env.REACT_APP_PUBLIC_FOLDER}
+        Logout={Logout}
+        activePage="my-applications"
+      />
 
       <div className="dashboard-partition">
         <div className="my-applications-header-card">

@@ -5,8 +5,8 @@ import Message from "../../components/message/Message";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
+import DashboardSidebar from "../../components/dashboard/DashboardSidebar";
 
 const ENDPOINT = process.env.NODE_ENV === 'production'
   ? "wss://adopte1etudiant.onrender.com"
@@ -110,53 +110,12 @@ export default function Messenger() {
   return (
     <>
       <main>
-        <div className="sidebar">
-          <ul>
-            <div className="student-avatar-container">
-              <li className="student-avatar-dashboard">
-                <img
-                  src={`${
-                    user?.user?.profilePicture
-                      ? PF + user?.user?.profilePicture
-                      : PF + "pic2.jpg"
-                  }`}
-                  alt="avatar-student"
-                />
-              </li>
-            </div>
-            <div className="center-icons-dashboard">
-              <li className="homes-icon">
-                <Link to="/dashboard">
-                  <i className="fas fa-house-user"></i>
-                </Link>
-              </li>
-              <li className="message-icon">
-                <Link to="/messenger">
-                  <i className="fas fa-comment"></i>
-                </Link>
-              </li>
-              <li className="user-icon">
-                <Link to="/dashboard">
-                  <i className="fas fa-users"></i>
-                </Link>
-              </li>
-              <li className="bell-icon">
-                <Link to="#">
-                  <i className="fas fa-bell"></i>
-                </Link>
-              </li>
-              <li>
-                <Link onClick={Logout} to="#">
-                  <img
-                    src="assets/svg/iconnavdashboard/deconnexion.svg"
-                    alt="deconnexion"
-                    id="logout-icon"
-                  />
-                </Link>
-              </li>
-            </div>
-          </ul>
-        </div>
+        <DashboardSidebar
+          user={user}
+          PF={PF}
+          Logout={Logout}
+          activePage="messenger"
+        />
 
         <div className="dashboard-partition">
           <div className="messenger">
