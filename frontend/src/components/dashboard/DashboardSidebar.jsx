@@ -59,7 +59,7 @@ const DashboardSidebar = ({
           <li className="student-avatar-dashboard" role="none">
             <img
               src={`${user?.user?.profilePicture ? PF + user?.user?.profilePicture : PF + "pic2.jpg"}`}
-              alt={`Photo de profil de ${user?.user?.firstname} ${user?.user?.lastname}`}
+              alt={`Profil de ${user?.user?.firstname} ${user?.user?.lastname}`}
             />
           </li>
         </div>

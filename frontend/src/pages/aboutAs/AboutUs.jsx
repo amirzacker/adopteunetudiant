@@ -3,9 +3,9 @@ import "./about-us.css";
 function AboutUs() {
   return (
     <div>
-      <div class="wrapper">
+      <div className="wrapper">
         <h1>Notre vision</h1>
-        <div class="team">
+        <div className="team">
           <div>
             <p>
               Notre vision est de créer un réseau solide et bienveillant
@@ -23,9 +23,9 @@ function AboutUs() {
         </div>
       </div>
 
-      <div class="containerabout">
-        <div class="about">
-          <div class="left">
+      <div className="containerabout">
+        <div className="about">
+          <div className="left">
             <h1>A Propos de Nous</h1>
             <hr />
             <p>
@@ -47,17 +47,17 @@ function AboutUs() {
               adaptée aux besoins de tous les étudiants.
             </p>
           </div>
-          <div class="right">
-            <img src="/assets/img/home1.png" alt="" />
+          <div className="right">
+            <img src="/assets/img/home1.png" alt="Étudiants collaborant sur un projet" />
           </div>
-          <div class="clear"></div>
+          <div className="clear"></div>
         </div>
 
-        <div class="mission">
-          <div class="left">
-            <img src="/assets/img/home5.png" alt="" />
+        <div className="mission">
+          <div className="left">
+            <img src="/assets/img/home5.png" alt="Équipe de professionnels en réunion" />
           </div>
-          <div class="right">
+          <div className="right">
             <h1>Notre Histoire</h1>
             <hr />
             <p>
@@ -76,43 +76,44 @@ function AboutUs() {
               connaissances, leurs compétences et leur réseau professionnel.
             </p>
           </div>
-          <div class="clear"></div>
+          <div className="clear"></div>
         </div>
       </div>
 
-      <div class="wrapper">
-        <h1>Notre équite</h1>
-        <div class="team">
-          <div class="team_member">
-            <div class="team_img"></div>
+      <div className="wrapper">
+        <h1>Notre équipe</h1>
+        <div className="team">
+          <div className="team_member">
+            <div className="team_img"></div>
             <h3>Alice</h3>
-            <p class="role">Co-fondatrice et Directrice Générale</p>
+            <p className="role">Co-fondatrice et Directrice Générale</p>
             <p>
               Alice est diplômée d'une école de commerce et possède une solide
-              expérience en gestion de projets et en marketing. En tant que
-              co-fondatrice et directrice générale d'Adopte un Étudiant...
+              expérience en gestion de projets et en marketing. Elle supervise
+              la stratégie globale de la plateforme et coordonne les équipes
+              pour offrir la meilleure expérience utilisateur possible.
             </p>
           </div>
-          <div class="team_member">
-            <div class="team_img"></div>
+          <div className="team_member">
+            <div className="team_img"></div>
             <h3>Amir</h3>
-            <p class="role">Co-fondateur et Directeur Technique</p>
+            <p className="role">Co-fondateur et Directeur Technique</p>
             <p>
-              Maxime est diplômé d'une école d'ingénieurs et a travaillé en tant
-              que développeur web pour plusieurs entreprises avant de co-fonder
-              Adopte un Étudiant. En tant que directeur technique, Maxime est en
-              charge de la conception...
+              Amir est diplômé d'une école d'ingénieurs et possède une expertise
+              approfondie en développement web et architecture logicielle. Il
+              supervise le développement technique de la plateforme et assure
+              sa sécurité et sa performance.
             </p>
           </div>
-          <div class="team_member">
-            <div class="team_img"></div>
+          <div className="team_member">
+            <div className="team_img"></div>
             <h3>Sarah</h3>
-            <p class="role">Responsable Communication et Relations Publiques</p>
+            <p className="role">Responsable Communication et Relations Publiques</p>
             <p>
               Sarah est titulaire d'un master en communication et possède une
-              expérience en relations publiques, en rédaction et en stratégie de
-              contenu. En tant que responsable communication et relations
-              publiques chez Adopte un Étudiant...
+              solide expérience en relations publiques et stratégie de contenu.
+              Elle développe la visibilité de la plateforme et maintient les
+              relations avec les partenaires et la communauté.
             </p>
           </div>
         </div>

@@ -32,7 +32,7 @@ export default function Login() {
     <div className="mapage">
         <div className="container-login">
             <form className="login" onSubmit={handleClick}>
-            <img src="assets/logos/logodef.svg" alt="adopte-logo" className="adopte-logo-login"/>
+            <img src="assets/logos/logodef.svg" alt="Logo Adopte un étudiant" className="adopte-logo-login"/>
                 <p className="welcome">Bienvenue</p>
                 <input type="email" name="email" placeholder="Email" ref={email} onChange={(e) => (e.target.value)} required/><br/>
                 <input type="password" name="password" placeholder="Mot de passe" required minLength="6" ref={password}/><br/>

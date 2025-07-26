@@ -173,7 +173,7 @@ export default function RegisterStudent() {
                 <h3>
                     <label htmlFor="profilePicture">
 
-                     <img style={{ cursor: 'pointer' }} src="assets/svg/icon-img-etudiant.svg" alt="upload-img-student"/>
+                     <img style={{ cursor: 'pointer' }} src="assets/svg/icon-img-etudiant.svg" alt="Cliquer pour ajouter un profil"/>
                     </label>
                 </h3>
                 <p>Ajoutez votre photo</p>

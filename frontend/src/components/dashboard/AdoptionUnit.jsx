@@ -33,7 +33,7 @@ const handleDelete = (event) => {
         <img
          className="card-img-top"
           src={`${user?.profilePicture ? PF + user?.profilePicture : PF + "pic2.jpg"}`}
-          alt="Card cap"
+          alt={`Profil de ${user?.firstname || user?.name || 'utilisateur'}`}
         />
       </Link>
       <div className="card-body">

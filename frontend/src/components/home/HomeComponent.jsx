@@ -19,7 +19,7 @@ function HomeComponent () {
       <div className="col-12 col-sm-12 col-md-10 offset-md-1 col-xl-10 offset-xl-1">
         <div className="row bloc-produit">
           <div className="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 text-center order-last order-lg-first">
-            <img src="/assets/img/home5.png" alt="A la carte" className="img-fluid"/>
+            <img src="/assets/img/home5.png" alt="Illustration du processus d'adoption" className="img-fluid"/>
           </div>
           <div className="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 mobile-home order-first order-lg-last">
             <div id="presentiel" className="anchor"></div>
@@ -40,7 +40,7 @@ function HomeComponent () {
             <p>Nous mettons en avant <strong> les valeurs de votre entreprise </strong> pour attirer les meilleurs profils</p>
           </div>
           <div className="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 text-center">
-            <img src="/assets/img/home1.png" alt="Abonnement" className="img-fluid"/>
+            <img src="/assets/img/home1.png" alt="Illustration du processus de validation" className="img-fluid"/>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@ function HomeComponent () {
             <p>définit les termes et les conditions d'un accord entre deux ou plusieurs parties. Il peut être utilisé pour formaliser une variété de types d'accords, tels que les contrats de travail, les contrats d'achat ou de vente, les contrats de location ou de prestation de services. Les contrats contiennent généralement des informations sur les obligations et les responsabilités des parties, les paiements et les modalités de résiliation.</p>
           </div>
           <div className="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 text-center">
-            <img src="/assets/img/home3.png" alt="Abonnement" className="img-fluid"/>
+            <img src="/assets/img/home3.png" alt="Illustration des services d'abonnement" className="img-fluid"/>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ function HomeComponent () {
       <div className="col-12 col-sm-12 col-md-10 offset-md-1 col-xl-10 offset-xl-1">
         <div className="row bloc-produit">
           <div className="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 text-center order-last order-lg-first">
-            <img src="/assets/img/home4.png" alt="A la carte" className="img-fluid"/>
+            <img src="/assets/img/home4.png" alt="Illustration des services à la carte" className="img-fluid"/>
           </div>
           <div className="col-12 col-sm-12 col-md-12 col-lg-7 mobile-home col-xl-7 order-first order-lg-last">
             <div id="presentiel" className="anchor"></div>
@@ -111,13 +111,13 @@ function HomeComponent () {
             </div>
             <div className="col-6 col-sm-6 col-md-3 col-xl-3">
               <a href="/monter-en-competence">
-                <img src="/assets/img/adoptehome3.jpeg" alt="Monter en compétence" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
+                <img src="/assets/img/adoptehome3.jpeg" alt="Étudiant développant ses compétences" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
                 <p>Monter en compétences</p>
               </a>
             </div>
             <div className="col-6 col-sm-6 col-md-3 col-xl-3">
               <a href="/business">
-                <img src="/assets/img/adoptehome2.jpeg" alt="Former mes équipes" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
+                <img src="/assets/img/adoptehome2.jpeg" alt="Étudiants travaillant en équipe" className="mx-auto d-block img-fluid img-hover" width="188" height="225"/>
                 <p>Travailler en équipe</p>
               </a>
             </div>

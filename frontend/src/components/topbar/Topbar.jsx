@@ -49,7 +49,7 @@ export default function Topbar() {
                 ? PF + user.profilePicture
                 : PF + "person/noAvatar.png"
             }
-            alt=""
+            alt={`Profil de ${user.username || 'utilisateur'}`}
             className="topbarImg"
           />
         </Link>

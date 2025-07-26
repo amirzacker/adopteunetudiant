@@ -7,7 +7,7 @@ export default function Student({ student }) {
     <div className="card">
       <Link to={"/student/" + student._id}>
         {" "}
-        <img className="card-img-top" src={`${student?.profilePicture ? PF + student?.profilePicture : PF + "pic2.jpg"}`} alt="" />
+        <img className="card-img-top" src={`${student?.profilePicture ? PF + student?.profilePicture : PF + "pic2.jpg"}`} alt={`Profil de ${student?.firstname || 'étudiant'}`} />
       </Link>
       <div className="card-body">
         <span className="card-text fw-bold">{student?.firstname}</span>

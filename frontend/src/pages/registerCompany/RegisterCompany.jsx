@@ -119,7 +119,7 @@ export default function RegisterCompany() {
                 <h3>
                     <label htmlFor="profilePicture">
 
-                     <img src="assets/svg/icon-img-etudiant.svg" alt="upload-img-student"/>
+                     <img src="assets/svg/icon-img-etudiant.svg" alt="Cliquer pour ajouter le logo de l'entreprise"/>
                     </label>
                 </h3>
                 <p>Ajoutez votre logo</p>

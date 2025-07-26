@@ -26,7 +26,7 @@ function Home () {
     <div >
          
     <div className="container-fluid container-relative" id="img-header-container">
-        <img src="/assets/img/6.jpg" className="img-fluid" id="img-header" alt="header"/>
+        <img src="/assets/img/6.jpg" className="img-fluid" id="img-header" alt="Étudiants et professionnels collaborant ensemble"/>
         <div className="slogan-text">
             <p>Vous êtes in <b>THE RIGHT PLACE</b> pour trouver des profils appropriés à votre entreprise</p>
             <div>
@@ -45,7 +45,7 @@ function Home () {
     <div className="pic-ctn">
             {
           students.map((student, i) => (
-              <img key={i} onClick={() => navigate('/student/' + student._id)} src={`${student?.profilePicture ? PF + student?.profilePicture : PF + "pic2.jpg"}`} alt="" className="pic btn btn-link"/>
+              <img key={i} onClick={() => navigate('/student/' + student._id)} src={`${student?.profilePicture ? PF + student?.profilePicture : PF + "pic2.jpg"}`} alt={`Profil de ${student?.firstname || 'étudiant'}`} className="pic btn btn-link"/>
           ))}
     </div>
     <div className="heading text-center">
