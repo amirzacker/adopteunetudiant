@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "app1",
+    "jobOffer": {
+      "_id": "job1",
+      "title": "Frontend Developer",
+      "company": {
+        "_id": "company1",
+        "name": "Tech Corp",
+        "profilePicture": "tech-corp-logo.jpg"
+      }
+    },
+    "status": "pending",
+    "coverLetter": "I am very interested in this position and believe I would be a great fit for your team.",
+    "resume": "resume-john-doe.pdf",
+    "applicationDate": "2023-11-15T10:30:00.000Z",
+    "lastUpdated": "2023-11-15T10:30:00.000Z"
+  },
+  {
+    "_id": "app2",
+    "jobOffer": {
+      "_id": "job2",
+      "title": "Backend Developer",
+      "company": {
+        "_id": "company2",
+        "name": "StartupXYZ",
+        "profilePicture": "startup-logo.jpg"
+      }
+    },
+    "status": "accepted",
+    "coverLetter": "I have extensive experience in Node.js and would love to contribute to your team.",
+    "resume": "resume-john-doe.pdf",
+    "applicationDate": "2023-11-10T14:20:00.000Z",
+    "lastUpdated": "2023-11-12T09:15:00.000Z",
+    "interviewDate": "2023-11-20T10:00:00.000Z"
+  },
+  {
+    "_id": "app3",
+    "jobOffer": {
+      "_id": "job3",
+      "title": "Full Stack Developer",
+      "company": {
+        "_id": "company3",
+        "name": "Digital Agency",
+        "profilePicture": "agency-logo.jpg"
+      }
+    },
+    "status": "rejected",
+    "coverLetter": "I am passionate about full-stack development and eager to learn new technologies.",
+    "resume": "resume-john-doe.pdf",
+    "applicationDate": "2023-11-05T16:45:00.000Z",
+    "lastUpdated": "2023-11-08T11:30:00.000Z",
+    "rejectionReason": "We decided to go with a candidate with more experience in React."
+  },
+  {
+    "_id": "app4",
+    "jobOffer": {
+      "_id": "job4",
+      "title": "UI/UX Designer",
+      "company": {
+        "_id": "company4",
+        "name": "Creative Studio",
+        "profilePicture": "studio-logo.jpg"
+      }
+    },
+    "status": "interview_scheduled",
+    "coverLetter": "My design portfolio demonstrates my ability to create user-centered designs.",
+    "resume": "resume-john-doe.pdf",
+    "applicationDate": "2023-11-12T09:00:00.000Z",
+    "lastUpdated": "2023-11-14T15:20:00.000Z",
+    "interviewDate": "2023-11-25T14:00:00.000Z"
+  },
+  {
+    "_id": "app5",
+    "jobOffer": {
+      "_id": "job5",
+      "title": "Data Analyst",
+      "company": {
+        "_id": "company5",
+        "name": "Analytics Corp",
+        "profilePicture": "analytics-logo.jpg"
+      }
+    },
+    "status": "pending",
+    "coverLetter": "I have strong analytical skills and experience with Python and SQL.",
+    "resume": "resume-john-doe.pdf",
+    "applicationDate": "2023-11-13T11:15:00.000Z",
+    "lastUpdated": "2023-11-13T11:15:00.000Z"
+  }
+]

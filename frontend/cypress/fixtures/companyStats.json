@@ -1,0 +1,41 @@
+{
+  "totalJobs": 5,
+  "publishedJobs": 3,
+  "draftJobs": 1,
+  "closedJobs": 1,
+  "totalApplications": 25,
+  "pendingApplications": 10,
+  "reviewedApplications": 8,
+  "acceptedApplications": 5,
+  "rejectedApplications": 2,
+  "recentApplications": 3,
+  "applicationsByMonth": [
+    { "month": "2023-10", "count": 5 },
+    { "month": "2023-11", "count": 20 }
+  ],
+  "topPerformingJobs": [
+    {
+      "jobId": "job3",
+      "title": "Full Stack Developer",
+      "applicationCount": 12
+    },
+    {
+      "jobId": "job4",
+      "title": "DevOps Engineer",
+      "applicationCount": 8
+    },
+    {
+      "jobId": "job1",
+      "title": "Frontend Developer",
+      "applicationCount": 5
+    }
+  ],
+  "applicationsByStatus": {
+    "pending": 10,
+    "reviewed": 8,
+    "accepted": 5,
+    "rejected": 2
+  },
+  "averageApplicationsPerJob": 5.0,
+  "conversionRate": 0.2
+}

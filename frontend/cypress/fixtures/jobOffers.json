@@ -1,0 +1,126 @@
+[
+  {
+    "_id": "1",
+    "title": "Frontend Developer",
+    "description": "We are looking for a skilled frontend developer to join our team. You will be responsible for developing user interfaces using React and modern web technologies.",
+    "company": {
+      "_id": "company1",
+      "name": "Tech Corp",
+      "city": "Paris",
+      "profilePicture": "tech-corp-logo.jpg"
+    },
+    "location": "Paris",
+    "requirements": "React, JavaScript, CSS, HTML, Git",
+    "jobType": {
+      "_id": "type1",
+      "name": "Stage"
+    },
+    "domain": {
+      "_id": "domain1",
+      "name": "Informatique"
+    },
+    "status": "published",
+    "salary": "35000-45000",
+    "duration": "6 months",
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-06-30T00:00:00.000Z",
+    "applicationDeadline": "2023-12-15T00:00:00.000Z",
+    "benefits": "Health insurance, flexible hours, remote work",
+    "workingHours": "35h/week",
+    "applicationCount": 5,
+    "publicationDate": "2023-11-01T00:00:00.000Z"
+  },
+  {
+    "_id": "2",
+    "title": "Backend Developer",
+    "description": "Join our backend team to develop scalable APIs and microservices using Node.js and MongoDB.",
+    "company": {
+      "_id": "company2",
+      "name": "Web Solutions",
+      "city": "Lyon",
+      "profilePicture": "web-solutions-logo.jpg"
+    },
+    "location": "Lyon",
+    "requirements": "Node.js, MongoDB, Express, REST APIs, Docker",
+    "jobType": {
+      "_id": "type2",
+      "name": "CDI"
+    },
+    "domain": {
+      "_id": "domain1",
+      "name": "Informatique"
+    },
+    "status": "published",
+    "salary": "40000-50000",
+    "duration": "12 months",
+    "startDate": "2024-02-01T00:00:00.000Z",
+    "endDate": "2025-01-31T00:00:00.000Z",
+    "applicationDeadline": "2024-01-15T00:00:00.000Z",
+    "benefits": "Health insurance, meal vouchers, training budget",
+    "workingHours": "39h/week",
+    "applicationCount": 3,
+    "publicationDate": "2023-11-05T00:00:00.000Z"
+  },
+  {
+    "_id": "3",
+    "title": "UX/UI Designer",
+    "description": "Creative UX/UI designer needed to design intuitive and beautiful user interfaces for our web and mobile applications.",
+    "company": {
+      "_id": "company3",
+      "name": "Design Studio",
+      "city": "Marseille",
+      "profilePicture": "design-studio-logo.jpg"
+    },
+    "location": "Marseille",
+    "requirements": "Figma, Adobe Creative Suite, User Research, Prototyping",
+    "jobType": {
+      "_id": "type1",
+      "name": "Stage"
+    },
+    "domain": {
+      "_id": "domain2",
+      "name": "Design"
+    },
+    "status": "published",
+    "salary": "30000-40000",
+    "duration": "4 months",
+    "startDate": "2024-03-01T00:00:00.000Z",
+    "endDate": "2024-06-30T00:00:00.000Z",
+    "applicationDeadline": "2024-02-15T00:00:00.000Z",
+    "benefits": "Creative environment, latest design tools, mentorship",
+    "workingHours": "35h/week",
+    "applicationCount": 8,
+    "publicationDate": "2023-11-10T00:00:00.000Z"
+  },
+  {
+    "_id": "4",
+    "title": "Data Analyst",
+    "description": "Analyze business data to provide insights and support decision-making processes using Python and SQL.",
+    "company": {
+      "_id": "company4",
+      "name": "Data Insights",
+      "city": "Toulouse",
+      "profilePicture": "data-insights-logo.jpg"
+    },
+    "location": "Toulouse",
+    "requirements": "Python, SQL, Excel, Tableau, Statistics",
+    "jobType": {
+      "_id": "type3",
+      "name": "CDD"
+    },
+    "domain": {
+      "_id": "domain3",
+      "name": "Data Science"
+    },
+    "status": "published",
+    "salary": "38000-48000",
+    "duration": "8 months",
+    "startDate": "2024-01-15T00:00:00.000Z",
+    "endDate": "2024-09-15T00:00:00.000Z",
+    "applicationDeadline": "2023-12-30T00:00:00.000Z",
+    "benefits": "Data science training, conference attendance, flexible schedule",
+    "workingHours": "37h/week",
+    "applicationCount": 2,
+    "publicationDate": "2023-11-15T00:00:00.000Z"
+  }
+]

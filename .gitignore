@@ -9,3 +9,38 @@ build/
 .vscode/
 .DS_Store?
 *.log
+
+# Cypress - Fichiers générés automatiquement (à ignorer)
+frontend/cypress/videos/*
+!frontend/cypress/videos/.gitkeep
+frontend/cypress/screenshots/*
+!frontend/cypress/screenshots/.gitkeep
+frontend/cypress/downloads/*
+!frontend/cypress/downloads/.gitkeep
+
+# Cypress - Fichiers de tests temporaires et de debug
+frontend/cypress/support/component-index.html
+frontend/cypress/.nyc_output/
+frontend/cypress/coverage/
+
+# Jest - Fichiers de couverture et cache
+frontend/coverage/
+frontend/.nyc_output/
+frontend/jest_*/
+frontend/.jest-cache/
+
+# Fichiers de tests générés automatiquement
+**/*.test.js.snap
+**/*.spec.js.snap
+**/*.test.jsx.snap
+**/*.spec.jsx.snap
+
+# Logs de tests
+frontend/cypress.log
+frontend/test-results/
+frontend/playwright-report/
+frontend/test-results.xml
+
+# Fichiers temporaires de tests
+frontend/cypress/support/index.js.backup
+frontend/cypress/plugins/index.js.backup

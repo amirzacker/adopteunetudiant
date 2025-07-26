@@ -1,0 +1,22 @@
+[
+  {
+    "_id": "type1",
+    "name": "Stage"
+  },
+  {
+    "_id": "type2",
+    "name": "CDI"
+  },
+  {
+    "_id": "type3",
+    "name": "CDD"
+  },
+  {
+    "_id": "type4",
+    "name": "Freelance"
+  },
+  {
+    "_id": "type5",
+    "name": "Alternance"
+  }
+]

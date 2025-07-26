@@ -1,0 +1,115 @@
+[
+  {
+    "_id": "app1",
+    "jobOffer": {
+      "_id": "job1",
+      "title": "Frontend Developer"
+    },
+    "student": {
+      "_id": "student1",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "profilePicture": "john-profile.jpg",
+      "domain": {
+        "name": "Informatique"
+      }
+    },
+    "coverLetter": "I am very interested in this frontend developer position...",
+    "resume": "john-doe-resume.pdf",
+    "status": "pending",
+    "applicationDate": "2023-11-10T10:30:00.000Z"
+  },
+  {
+    "_id": "app2",
+    "jobOffer": {
+      "_id": "job1",
+      "title": "Frontend Developer"
+    },
+    "student": {
+      "_id": "student2",
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "email": "jane.smith@example.com",
+      "profilePicture": "jane-profile.jpg",
+      "domain": {
+        "name": "Informatique"
+      }
+    },
+    "coverLetter": "I have 3 years of experience in React development...",
+    "resume": "jane-smith-resume.pdf",
+    "status": "reviewed",
+    "applicationDate": "2023-11-12T14:15:00.000Z",
+    "reviewDate": "2023-11-15T09:00:00.000Z",
+    "reviewNotes": "Strong technical background, good portfolio"
+  },
+  {
+    "_id": "app3",
+    "jobOffer": {
+      "_id": "job3",
+      "title": "Full Stack Developer"
+    },
+    "student": {
+      "_id": "student3",
+      "firstname": "Mike",
+      "lastname": "Johnson",
+      "email": "mike.johnson@example.com",
+      "profilePicture": "mike-profile.jpg",
+      "domain": {
+        "name": "Informatique"
+      }
+    },
+    "coverLetter": "As a full stack developer with experience in both React and Node.js...",
+    "resume": "mike-johnson-resume.pdf",
+    "status": "accepted",
+    "applicationDate": "2023-11-08T16:45:00.000Z",
+    "reviewDate": "2023-11-10T11:30:00.000Z",
+    "reviewNotes": "Excellent candidate, perfect fit for the role",
+    "interviewDate": "2023-11-20T10:00:00.000Z",
+    "interviewNotes": "Technical interview scheduled"
+  },
+  {
+    "_id": "app4",
+    "jobOffer": {
+      "_id": "job3",
+      "title": "Full Stack Developer"
+    },
+    "student": {
+      "_id": "student4",
+      "firstname": "Sarah",
+      "lastname": "Wilson",
+      "email": "sarah.wilson@example.com",
+      "profilePicture": "sarah-profile.jpg",
+      "domain": {
+        "name": "Design"
+      }
+    },
+    "coverLetter": "Although my background is in design, I have been learning full stack development...",
+    "resume": "sarah-wilson-resume.pdf",
+    "status": "rejected",
+    "applicationDate": "2023-11-09T13:20:00.000Z",
+    "reviewDate": "2023-11-12T15:45:00.000Z",
+    "reviewNotes": "Not enough technical experience for this role"
+  },
+  {
+    "_id": "app5",
+    "jobOffer": {
+      "_id": "job4",
+      "title": "DevOps Engineer"
+    },
+    "student": {
+      "_id": "student5",
+      "firstname": "Alex",
+      "lastname": "Brown",
+      "email": "alex.brown@example.com",
+      "profilePicture": "alex-profile.jpg",
+      "domain": {
+        "name": "Informatique"
+      }
+    },
+    "coverLetter": "I have extensive experience with Docker, Kubernetes, and AWS...",
+    "resume": "alex-brown-resume.pdf",
+    "status": "pending",
+    "applicationDate": "2023-11-11T11:00:00.000Z"
+  }
+]

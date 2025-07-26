@@ -37,6 +37,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
     "test:e2e": "npx cypress open",
+    "test:e2e:headless": "npx cypress run",
+    "test:e2e:ci": "npx cypress run --browser chrome --headless --record false",
+    "test:smoke": "npx cypress run --spec 'cypress/e2e/job-board/job-board-smoke-test.cy.js'",
+    "test:clean": "rm -rf cypress/videos/*.mp4 cypress/videos/*.webm cypress/screenshots/*.png cypress/downloads/* && touch cypress/videos/.gitkeep cypress/screenshots/.gitkeep cypress/downloads/.gitkeep",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001",
@@ -62,6 +66,6 @@
     "node": "16.14.0"
   },
   "devDependencies": {
-    "cypress": "^9.4.1"
+    "cypress": "^13.6.0"
   }
 }

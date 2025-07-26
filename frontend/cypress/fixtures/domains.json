@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "domain1",
+    "name": "Informatique"
+  },
+  {
+    "_id": "domain2",
+    "name": "Design"
+  },
+  {
+    "_id": "domain3",
+    "name": "Data Science"
+  },
+  {
+    "_id": "domain4",
+    "name": "Marketing"
+  },
+  {
+    "_id": "domain5",
+    "name": "Finance"
+  },
+  {
+    "_id": "domain6",
+    "name": "Ressources Humaines"
+  }
+]
