@@ -132,6 +132,13 @@ if (process.env.NODE_ENV === 'production' && config.mongoUri) {
 app.use(session(sessionConfig));
 
 // Swagger Documentation
+// Serve the swagger.json file
+app.get('/api-docs/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+// Serve Swagger UI
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: "API Adopte un Étudiant - Documentation",
@@ -140,6 +147,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, {
     persistAuthorization: true,
     displayRequestDuration: true,
     filter: true,
+    url: '/api-docs/swagger.json'
   }
 }));
 
@@ -190,6 +198,41 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+/**
+ * @swagger
+ * /api/uploads:
+ *   post:
+ *     summary: Upload un fichier
+ *     tags: [Files]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Fichier à uploader (PDF, JPEG, PNG, JPG)
+ *               name:
+ *                 type: string
+ *                 description: Nom du fichier
+ *     responses:
+ *       200:
+ *         description: Fichier uploadé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "File uploaded successfully"
+ *       400:
+ *         description: Type de fichier invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 app.post("/api/uploads", upload.single("file"), (req, res) => {
   try {
     return res.status(200).json("File uploaded successfully");
@@ -197,6 +240,41 @@ app.post("/api/uploads", upload.single("file"), (req, res) => {
     console.error(error);
   }
 });
+
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Connexion utilisateur
+ *     tags: [Auth]
+ *     description: Authentifie un utilisateur et retourne un token JWT
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Connexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       400:
+ *         description: Données de connexion invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Email ou mot de passe incorrect
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+app.post("/api/login", usersController.login);
 
 // Routes API
 app.use("/api/messages", authMiddleware, messagesRouter);
@@ -206,7 +284,6 @@ app.use("/api/contracts", authMiddleware, contractsRouter);
 app.use("/api/jobOffers", jobOffersRouter);
 app.use("/api/jobApplications", jobApplicationsRouter);
 app.use("/api/users", userRouter);
-app.post("/api/login", usersController.login);
 app.use("/api/domains", domainRouter);
 app.use("/api/searchTypes", searchTypeRouter);
 
