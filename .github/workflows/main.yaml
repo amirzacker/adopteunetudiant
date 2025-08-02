@@ -1,0 +1,236 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '16.13.1'
+  FRONTEND_NODE_VERSION: '16.14.0'
+
+jobs:
+  # Test job for backend
+  test-backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.adminCommand(\"ismaster\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm test
+        env:
+          NODE_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/adopte-etudiant-test
+          JWT_SECRET: test-jwt-secret-key-for-ci
+          SESSION_SECRET: test-session-secret-key-for-ci
+          ADMIN_COOKIE_PASSWORD: test-admin-cookie-password
+          ADMIN_EMAIL: test@example.com
+          ADMIN_PASSWORD: testpassword
+          FRONT_URL: http://localhost:3000
+
+  # Test job for frontend
+  test-frontend:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.FRONTEND_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run frontend unit tests
+        run: |
+          cd frontend
+          npm test -- --coverage --watchAll=false
+        env:
+          CI: true
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+        env:
+          CI: true
+
+  # E2E tests (optional, can be resource intensive)
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    if: github.event_name == 'pull_request'
+
+    services:
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.adminCommand(\"ismaster\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for backend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Start backend server
+        run: |
+          cd backend
+          npm start &
+          sleep 10
+        env:
+          NODE_ENV: test
+          PORT: 3001
+          MONGODB_URI: mongodb://localhost:27017/adopte-etudiant-e2e
+          JWT_SECRET: test-jwt-secret-key-for-e2e
+          SESSION_SECRET: test-session-secret-key-for-e2e
+          ADMIN_COOKIE_PASSWORD: test-admin-cookie-password
+          ADMIN_EMAIL: test@example.com
+          ADMIN_PASSWORD: testpassword
+          FRONT_URL: http://localhost:3000
+
+      - name: Setup Node.js for frontend
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.FRONTEND_NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Start frontend server
+        run: |
+          cd frontend
+          npm start &
+          sleep 15
+        env:
+          CI: true
+
+      - name: Run Cypress smoke tests
+        run: |
+          cd frontend
+          npm run test:smoke
+        env:
+          CYPRESS_baseUrl: http://localhost:3000
+
+  # Build job
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: |
+            frontend/build/
+            backend/
+            package.json
+          retention-days: 1
+
+  # Deploy job (only on main branch after successful tests)
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-success: true
+
+      - name: Deployment notification
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "🚀 Application deployed to Render.com"
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the logs and try again."

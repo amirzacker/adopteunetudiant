@@ -371,3 +371,46 @@ mongod --version  # Doit être 4.4+
 - **Performance** : Optimisations appliquées
 
 **L'application Adopte un Étudiant est maintenant prête pour le déploiement et l'utilisation en production !** 🚀
+
+---
+
+## 🚀 **Déploiement et CI/CD**
+
+### Manuel Complet de Déploiement
+
+📖 **[MANUEL_DEPLOIEMENT_CICD.md](MANUEL_DEPLOIEMENT_CICD.md)** - Guide complet pour configurer le déploiement automatique
+
+**Contenu du manuel :**
+- **Partie 1** : Configuration Render.com
+- **Partie 2** : Configuration MongoDB Atlas
+- **Partie 3** : Configuration GitHub Actions (CI/CD)
+- **Partie 4** : Tests et processus de déploiement
+- **Partie 5** : Dépannage et maintenance
+- **Partie 6** : Sécurité et bonnes pratiques
+- **Partie 7** : Mise en production
+
+### Déploiement Rapide
+
+```bash
+# 1. Tests locaux avant déploiement
+./scripts/test-local.sh
+
+# 2. Build de vérification
+npm run build
+
+# 3. Workflow de déploiement
+git checkout -b feature/ma-fonctionnalite
+# ... développement ...
+git push origin feature/ma-fonctionnalite
+# → Créer PR → Tests automatiques → Merge → Déploiement automatique
+```
+
+### Pipeline CI/CD Automatique
+
+- **Pull Request** → Tests automatiques (sans déploiement)
+- **Merge vers main** → Tests + Déploiement automatique sur Render.com
+- **Monitoring** → Logs et métriques en temps réel
+
+### Déploiement Legacy
+
+Pour le déploiement sur Coolify, consultez [DEPLOYMENT.md](DEPLOYMENT.md)
