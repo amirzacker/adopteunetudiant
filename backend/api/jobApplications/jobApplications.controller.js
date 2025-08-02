@@ -1,6 +1,9 @@
 const { NotFoundError, UnauthorizedError, ForbiddenError, ValidationError } = require('../../utils/errors/');
 const jobApplicationsService = require("./jobApplications.service");
 const jobOffersService = require("../jobOffers/jobOffers.service");
+const logger = require('../../utils/logger');
+const LogMetadata = require('../../utils/logMetadata');
+const PerformanceTracker = require('../../utils/performance');
 
 class JobApplicationsController {
 
@@ -131,20 +134,72 @@ class JobApplicationsController {
       const id = req.params.id;
       const { status, reviewNotes } = req.body;
 
-      const application = await jobApplicationsService.getById(id);
+      logger.info('Job application status update initiated',
+        LogMetadata.createBusinessContext('JOB_APPLICATION_STATUS_UPDATE_ATTEMPT', {
+          applicationId: id,
+          newStatus: status,
+          hasReviewNotes: !!reviewNotes,
+          companyId: req.user._id
+        }, req)
+      );
+
+      const application = await PerformanceTracker.measureDbQuery(
+        'findById', 'jobApplications',
+        () => jobApplicationsService.getById(id),
+        { applicationId: id }
+      );
+
       if (!application) {
+        logger.warn('Job application status update failed: Application not found',
+          LogMetadata.createBusinessContext('JOB_APPLICATION_NOT_FOUND', {
+            applicationId: id,
+            companyId: req.user._id
+          }, req)
+        );
         throw new NotFoundError("Application not found");
       }
 
       // Check if user is the company that owns the job offer or admin
       if (application.jobOffer.company._id.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+        logger.warn('Job application status update denied: Insufficient permissions',
+          LogMetadata.createAuthContext('JOB_APPLICATION_UPDATE_DENIED', req, {
+            applicationId: id,
+            applicationCompanyId: application.jobOffer.company._id,
+            requestingUserId: req.user._id,
+            isAdmin: req.user.isAdmin
+          })
+        );
         throw new ForbiddenError("You can only update applications for your own job offers");
       }
 
-      const updatedApplication = await jobApplicationsService.updateStatus(id, status, reviewNotes);
+      const updatedApplication = await PerformanceTracker.measureApiOperation(
+        req,
+        () => jobApplicationsService.updateStatus(id, status, reviewNotes),
+        'UPDATE_APPLICATION_STATUS'
+      );
+
+      logger.info('Job application status updated successfully',
+        LogMetadata.createBusinessContext('JOB_APPLICATION_STATUS_UPDATED', {
+          applicationId: id,
+          studentId: updatedApplication.student._id,
+          jobOfferId: updatedApplication.jobOffer._id,
+          oldStatus: application.status,
+          newStatus: status,
+          companyId: req.user._id,
+          hasReviewNotes: !!reviewNotes
+        }, req)
+      );
+
       req.io.emit("jobApplication:statusUpdate", updatedApplication);
       res.json(updatedApplication);
     } catch (err) {
+      logger.error('Error updating job application status',
+        LogMetadata.createErrorContext(err, req, {
+          operation: 'updateStatus',
+          applicationId: id,
+          newStatus: status
+        })
+      );
       next(err);
     }
   }

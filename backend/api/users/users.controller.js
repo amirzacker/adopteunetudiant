@@ -2,14 +2,34 @@ const {NotFoundError, UnauthorizedError, ForbiddenError, ValidationError } = req
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
 const usersService = require("./users.service");
+const logger = require('../../utils/logger');
+const LogMetadata = require('../../utils/logMetadata');
+const PerformanceTracker = require('../../utils/performance');
 
 
 class UsersController {
   async getAll(req, res, next) {
     try {
-      const users = await usersService.getAll();
+      logger.info('Fetching all users', LogMetadata.createRequestContext(req));
+
+      const users = await PerformanceTracker.measureApiOperation(
+        req,
+        () => usersService.getAll(),
+        'GET_ALL_USERS'
+      );
+
+      logger.info('Users retrieved successfully',
+        LogMetadata.createBusinessContext('USERS_RETRIEVED', {
+          userCount: users.length,
+          operation: 'getAll'
+        }, req)
+      );
+
       res.json(users);
     } catch (err) {
+      logger.error('Error fetching all users',
+        LogMetadata.createErrorContext(err, req, { operation: 'getAll' })
+      );
       next(err);
     }
   }
@@ -63,11 +83,39 @@ class UsersController {
 
   async create(req, res, next) {
     try {
-      const user = await usersService.create(req.body);
+      logger.info('User creation initiated',
+        LogMetadata.createBusinessContext('USER_CREATE_ATTEMPT', {
+          email: req.body.email ? req.body.email.substring(0, 3) + '***' : 'missing',
+          isStudent: req.body.isStudent,
+          isCompany: req.body.isCompany
+        }, req)
+      );
+
+      const user = await PerformanceTracker.measureApiOperation(
+        req,
+        () => usersService.create(req.body),
+        'CREATE_USER'
+      );
+
       user.password = undefined;
+
+      logger.info('User created successfully',
+        LogMetadata.createBusinessContext('USER_CREATED', {
+          userId: user._id,
+          userType: user.isStudent ? 'student' : (user.isCompany ? 'company' : 'admin'),
+          email: user.email.substring(0, 3) + '***'
+        }, req)
+      );
+
       req.io.emit("user:create", user);
       res.status(201).json(user);
     } catch (err) {
+      logger.error('Error creating user',
+        LogMetadata.createErrorContext(err, req, {
+          operation: 'create',
+          email: req.body.email ? req.body.email.substring(0, 3) + '***' : 'missing'
+        })
+      );
       next(err);
     }
   }
@@ -105,22 +153,90 @@ class UsersController {
     }
   }
   async login(req, res, next) {
+    const timer = PerformanceTracker.startTimer('USER_LOGIN',
+      LogMetadata.createRequestContext(req)
+    );
+
     try {
       const { email, password } = req.body;
-      const userId = await usersService.checkPasswordUser(email, password);
-      if (!userId) {
-        throw new UnauthorizedError();
+
+      logger.info('Login attempt initiated',
+        LogMetadata.createAuthContext('LOGIN_ATTEMPT', req, {
+          email: email ? email.substring(0, 3) + '***' : 'missing',
+          hasPassword: !!password
+        })
+      );
+
+      if (!email || !password) {
+        logger.warn('Login failed: Missing credentials',
+          LogMetadata.createAuthContext('LOGIN_MISSING_CREDENTIALS', req, {
+            missingEmail: !email,
+            missingPassword: !password
+          })
+        );
+        throw new ValidationError('Email and password are required');
       }
-      const user = await usersService.getById(userId);
+
+      const userId = await PerformanceTracker.measureDbQuery(
+        'find', 'users',
+        () => usersService.checkPasswordUser(email, password),
+        { operation: 'password_verification', email: email.substring(0, 3) + '***' }
+      );
+
+      if (!userId) {
+        logger.warn('Login failed: Invalid credentials',
+          LogMetadata.createAuthContext('LOGIN_INVALID_CREDENTIALS', req, {
+            email: email.substring(0, 3) + '***',
+            attemptTime: new Date().toISOString()
+          })
+        );
+        throw new UnauthorizedError('Invalid email or password');
+      }
+
+      const user = await PerformanceTracker.measureDbQuery(
+        'findById', 'users',
+        () => usersService.getById(userId),
+        { userId }
+      );
+
       const token = jwt.sign({ userId }, config.secretJwtToken, {
         expiresIn: "3d",
       });
+
+      // Remove sensitive data before logging
+      const userForLogging = {
+        id: user._id,
+        email: user.email,
+        isStudent: user.isStudent,
+        isCompany: user.isCompany,
+        isAdmin: user.isAdmin
+      };
+
+      logger.info('Login successful',
+        LogMetadata.createAuthContext('LOGIN_SUCCESS', req, {
+          userId: user._id,
+          userType: user.isStudent ? 'student' : (user.isCompany ? 'company' : 'admin'),
+          tokenExpiry: '3d',
+          loginTime: new Date().toISOString()
+        })
+      );
+
+      timer.stop({ success: true, userId: user._id });
 
       res.json({
         token,
         user
       });
     } catch (err) {
+      timer.stop({ success: false, error: err.message });
+
+      logger.error('Login error',
+        LogMetadata.createErrorContext(err, req, {
+          loginAttempt: true,
+          email: req.body.email ? req.body.email.substring(0, 3) + '***' : 'missing'
+        })
+      );
+
       next(err);
     }
   }

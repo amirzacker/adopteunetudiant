@@ -1,5 +1,8 @@
 const { NotFoundError, UnauthorizedError, ForbiddenError, ValidationError } = require('../../utils/errors/');
 const jobOffersService = require("./jobOffers.service");
+const logger = require('../../utils/logger');
+const LogMetadata = require('../../utils/logMetadata');
+const PerformanceTracker = require('../../utils/performance');
 
 class JobOffersController {
 
@@ -66,8 +69,24 @@ class JobOffersController {
   // Create new job offer
   async create(req, res, next) {
     try {
+      logger.info('Job offer creation initiated',
+        LogMetadata.createBusinessContext('JOB_OFFER_CREATE_ATTEMPT', {
+          companyId: req.user._id,
+          title: req.body.title,
+          jobType: req.body.jobType,
+          location: req.body.location
+        }, req)
+      );
+
       // Check if user is a company
       if (!req.user.isCompany) {
+        logger.warn('Job offer creation denied: User is not a company',
+          LogMetadata.createAuthContext('JOB_OFFER_CREATE_DENIED', req, {
+            userId: req.user._id,
+            userType: req.user.isStudent ? 'student' : 'admin',
+            attemptedAction: 'create_job_offer'
+          })
+        );
         throw new ForbiddenError("Only companies can create job offers");
       }
 
@@ -77,10 +96,33 @@ class JobOffersController {
         company: req.user._id.toString()
       };
 
-      const jobOffer = await jobOffersService.create(jobOfferData);
+      const jobOffer = await PerformanceTracker.measureApiOperation(
+        req,
+        () => jobOffersService.create(jobOfferData),
+        'CREATE_JOB_OFFER'
+      );
+
+      logger.info('Job offer created successfully',
+        LogMetadata.createBusinessContext('JOB_OFFER_CREATED', {
+          jobOfferId: jobOffer._id,
+          companyId: req.user._id,
+          title: jobOffer.title,
+          jobType: jobOffer.jobType,
+          location: jobOffer.location,
+          status: jobOffer.status
+        }, req)
+      );
+
       req.io.emit("jobOffer:create", jobOffer);
       res.status(201).json(jobOffer);
     } catch (err) {
+      logger.error('Error creating job offer',
+        LogMetadata.createErrorContext(err, req, {
+          operation: 'create',
+          companyId: req.user ? req.user._id : null,
+          title: req.body.title
+        })
+      );
       next(err);
     }
   }

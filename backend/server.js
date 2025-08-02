@@ -26,8 +26,10 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 const adminRouter = require('./api/admin/admin.router');
 const errorHandler = require('./middlewares/errorHandler');
-
-
+const correlationIdMiddleware = require('./middlewares/correlationId');
+const logger = require('./utils/logger');
+const LogMetadata = require('./utils/logMetadata');
+const PerformanceTracker = require('./utils/performance');
 
 const config = require("./config");
 
@@ -63,16 +65,48 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => {
-  console.log("a user connected.");
+  logger.info("Socket.IO user connected", {
+    socketEvent: 'CONNECTION',
+    socketId: socket.id,
+    ip: socket.handshake.address,
+    userAgent: socket.handshake.headers['user-agent'],
+    timestamp: new Date().toISOString(),
+    activeConnections: users.length
+  });
 
   socket.on("addUser", (userId) => {
+    logger.info("User added to Socket.IO session", {
+      socketEvent: 'ADD_USER',
+      userId,
+      socketId: socket.id,
+      ip: socket.handshake.address,
+      timestamp: new Date().toISOString(),
+      previousActiveUsers: users.length
+    });
+
     addUser(userId, socket.id);
     io.emit("getUsers", users);
+
+    logger.debug("Active users list updated", {
+      socketEvent: 'USERS_LIST_UPDATED',
+      activeUsers: users.length,
+      timestamp: new Date().toISOString()
+    });
   });
 
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    console.log(user);
+
+    logger.info("Real-time message sent", {
+      socketEvent: 'SEND_MESSAGE',
+      senderId,
+      receiverId,
+      messageLength: text ? text.length : 0,
+      receiverOnline: !!user,
+      socketId: socket.id,
+      timestamp: new Date().toISOString()
+    });
+
     io.emit("getMessage", {
       senderId,
       text,
@@ -80,9 +114,23 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("a user disconnected!");
+    logger.info("Socket.IO user disconnected", {
+      socketEvent: 'DISCONNECT',
+      socketId: socket.id,
+      ip: socket.handshake.address,
+      timestamp: new Date().toISOString(),
+      activeConnectionsBefore: users.length
+    });
+
     removeUser(socket.id);
     io.emit("getUsers", users);
+
+    logger.debug("User removed from active list", {
+      socketEvent: 'USER_REMOVED',
+      socketId: socket.id,
+      activeConnectionsAfter: users.length,
+      timestamp: new Date().toISOString()
+    });
   });
 });
 
@@ -91,10 +139,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Add correlation ID tracking for all requests
+app.use(correlationIdMiddleware);
+
 // Configuration des cookies
 app.use(cookieParser());
 
-// Rate limiting
+// Rate limiting with enhanced logging
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -104,7 +155,26 @@ const limiter = rateLimit({
   keyGenerator: (req) => {
     return req.ip || req.headers['x-forwarded-for'] || 'unknown';
   },
-  skip: () => process.env.NODE_ENV === 'development'
+  skip: () => process.env.NODE_ENV === 'development',
+  handler: (req, res, next, options) => {
+    logger.warn('Rate limit request blocked', {
+      securityEvent: 'RATE_LIMIT_BLOCKED',
+      ip: req.ip || req.connection.remoteAddress,
+      userAgent: req.get('User-Agent'),
+      url: req.url,
+      method: req.method,
+      limit: options.max,
+      windowMs: options.windowMs,
+      timestamp: new Date().toISOString()
+    });
+
+    res.status(options.statusCode).json({
+      error: {
+        status: options.statusCode,
+        message: options.message
+      }
+    });
+  }
 });
 
 app.use(limiter);
@@ -182,21 +252,60 @@ app.use(
     })
 );
 
-// Configuration Multer
+// Configuration Multer with enhanced logging
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    logger.debug('File upload destination set',
+      LogMetadata.createFileContext('SET_DESTINATION', {
+        destination: 'public/uploads',
+        originalName: file.originalname,
+        mimeType: file.mimetype
+      }, req)
+    );
     cb(null, "public/uploads");
   },
   filename: (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf') {
+    const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+
+    logger.info('File upload validation initiated',
+      LogMetadata.createFileContext('UPLOAD_VALIDATION', {
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        allowedTypes: allowedMimeTypes
+      }, req)
+    );
+
+    if (allowedMimeTypes.includes(file.mimetype)) {
+      logger.info('File upload validation successful',
+        LogMetadata.createFileContext('UPLOAD_VALIDATION_SUCCESS', {
+          originalName: file.originalname,
+          newName: req.body.name,
+          mimeType: file.mimetype,
+          size: file.size
+        }, req)
+      );
       cb(null, req.body.name);
     } else {
+      logger.warning('File upload validation failed: Invalid mime type',
+        LogMetadata.createFileContext('UPLOAD_VALIDATION_FAILED', {
+          originalName: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          allowedTypes: allowedMimeTypes
+        }, req)
+      );
       return cb(new Error('Invalid mime type, try only pdf, jpeg, png, jpg'));
     }
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024 // 2MB limit
+  }
+});
 
 /**
  * @swagger
@@ -233,12 +342,70 @@ const upload = multer({ storage: storage });
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-app.post("/api/uploads", upload.single("file"), (req, res) => {
-  try {
-    return res.status(200).json("File uploaded successfully");
-  } catch (error) {
-    console.error(error);
-  }
+app.post("/api/uploads", (req, res, next) => {
+  const uploadTimer = PerformanceTracker.startTimer('FILE_UPLOAD',
+    LogMetadata.createRequestContext(req)
+  );
+
+  upload.single("file")(req, res, (err) => {
+    if (err) {
+      uploadTimer.stop({ success: false, error: err.message });
+
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          logger.warn('File upload failed: File too large',
+            LogMetadata.createFileContext('UPLOAD_SIZE_EXCEEDED', {
+              error: err.message,
+              limit: '2MB'
+            }, req)
+          );
+          return res.status(400).json({ error: 'File too large. Maximum size is 2MB.' });
+        }
+      }
+
+      logger.error('File upload error',
+        LogMetadata.createErrorContext(err, req, {
+          operation: 'file_upload',
+          errorType: err.constructor.name
+        })
+      );
+
+      return res.status(400).json({ error: err.message });
+    }
+
+    try {
+      const uploadDuration = uploadTimer.stop({
+        success: true,
+        fileName: req.file ? req.file.filename : null,
+        fileSize: req.file ? req.file.size : null
+      });
+
+      if (req.file) {
+        logger.info('File uploaded successfully',
+          LogMetadata.createFileContext('UPLOAD_SUCCESS', {
+            originalName: req.file.originalname,
+            savedName: req.file.filename,
+            size: req.file.size,
+            mimeType: req.file.mimetype,
+            destination: req.file.destination,
+            uploadDuration: `${uploadDuration.toFixed(2)}ms`
+          }, req)
+        );
+      }
+
+      return res.status(200).json("File uploaded successfully");
+    } catch (error) {
+      uploadTimer.stop({ success: false, error: error.message });
+
+      logger.error('File upload processing error',
+        LogMetadata.createErrorContext(error, req, {
+          operation: 'file_upload_processing'
+        })
+      );
+
+      return res.status(500).json({ error: 'Internal server error during file processing' });
+    }
+  });
 });
 
 /**
