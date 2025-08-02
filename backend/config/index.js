@@ -20,6 +20,10 @@ module.exports = {
   // Logging configuration
   logLevel: process.env.LOG_LEVEL || 'info',
 
+  // Elasticsearch configuration
+  elasticUser: process.env.ELASTIC_USER || 'elastic',
+  elasticPassword: process.env.ELASTIC_PASSWORD || '',
+
   //admin
   email: process.env.ADMIN_EMAIL || 'email@gmail.com',
 
