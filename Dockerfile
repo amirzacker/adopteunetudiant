@@ -59,5 +59,9 @@ EXPOSE 3001
 ENV NODE_ENV=production
 ENV PORT=3001
 
+# Add health check for Docker
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
+
 # Commande de démarrage
 CMD ["node", "backend/www/app.js"]

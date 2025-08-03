@@ -6,6 +6,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const rateLimit = require('express-rate-limit');
+const statusMonitor = require('express-status-monitor');
 const multer = require("multer");
 const path = require("path");
 const userRouter = require("./api/users/users.router");
@@ -25,15 +26,50 @@ const MongoStore = require('connect-mongo');
 const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
 const adminRouter = require('./api/admin/admin.router');
+const monitoringRouter = require('./api/monitoring/monitoring.router');
 const errorHandler = require('./middlewares/errorHandler');
 const correlationIdMiddleware = require('./middlewares/correlationId');
+const { enhancedMetricsMiddleware, trackSocketConnection, recordSocketMessage } = require('./middlewares/metricsMiddleware');
 const logger = require('./utils/logger');
 const LogMetadata = require('./utils/logMetadata');
 const PerformanceTracker = require('./utils/performance');
+const metricsCollector = require('./utils/metrics');
 
 const config = require("./config");
+const monitoringConfig = require("./config/monitoring");
 
 const app = express();
+
+// Configure express-status-monitor
+const statusMonitorConfig = {
+  title: 'Adopte un Étudiant - System Monitor',
+  path: '/api/status',
+  spans: [
+    {
+      interval: 1,     // Every second
+      retention: 60    // Keep 60 datapoints (1 minute)
+    },
+    {
+      interval: 5,     // Every 5 seconds
+      retention: 60    // Keep 60 datapoints (5 minutes)
+    },
+    {
+      interval: 15,    // Every 15 seconds
+      retention: 60    // Keep 60 datapoints (15 minutes)
+    }
+  ],
+  chartVisibility: {
+    cpu: true,
+    mem: true,
+    load: true,
+    responseTime: true,
+    rps: true,
+    statusCodes: true
+  },
+  healthChecks: []
+};
+
+app.use(statusMonitor(statusMonitorConfig));
 
 const server = http.createServer(app);
 const io = new Server(server,{ 
@@ -44,7 +80,11 @@ const io = new Server(server,{
 
 io.on("connection", (socket) => {
   socket.on("sendMessage", (data) => {
-    console.log(data);
+    logger.debug("Socket message received", {
+      socketEvent: 'MESSAGE_RECEIVED',
+      dataLength: data ? JSON.stringify(data).length : 0,
+      socketId: socket.id
+    });
   });
 });
 
@@ -87,6 +127,10 @@ io.on("connection", (socket) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
 
+    // Track Socket.IO metrics
+    trackSocketConnection(socket, users);
+    recordSocketMessage('addUser');
+
     logger.debug("Active users list updated", {
       socketEvent: 'USERS_LIST_UPDATED',
       activeUsers: users.length,
@@ -111,6 +155,9 @@ io.on("connection", (socket) => {
       senderId,
       text,
     });
+
+    // Record Socket.IO message metrics
+    recordSocketMessage('sendMessage');
   });
 
   socket.on("disconnect", () => {
@@ -124,6 +171,10 @@ io.on("connection", (socket) => {
 
     removeUser(socket.id);
     io.emit("getUsers", users);
+
+    // Update Socket.IO metrics after user removal
+    trackSocketConnection(socket, users);
+    recordSocketMessage('disconnect');
 
     logger.debug("User removed from active list", {
       socketEvent: 'USER_REMOVED',
@@ -141,6 +192,8 @@ app.use((req, res, next) => {
 
 // Add correlation ID tracking for all requests
 app.use(correlationIdMiddleware);
+
+app.use(enhancedMetricsMiddleware);
 
 // Configuration des cookies
 app.use(cookieParser());
@@ -453,6 +506,9 @@ app.use("/api/jobApplications", jobApplicationsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/domains", domainRouter);
 app.use("/api/searchTypes", searchTypeRouter);
+
+// Monitoring and health check routes (should be accessible without auth)
+app.use("/api", monitoringRouter);
 
 // Servir le frontend pour toutes les autres routes
 app.get("*", (req, res) => {

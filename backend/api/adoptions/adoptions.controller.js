@@ -16,7 +16,6 @@ class AdoptionController {
   async getAllAdoptions(req, res, next) {
     try {
       const adoptions = await adoptionService.getAll(req.params.userId);
-      //console.log(req.params);
       res.json(adoptions);
     } catch (err) {
       next(err);

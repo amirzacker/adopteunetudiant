@@ -42,7 +42,7 @@ if (config.elasticPassword) {
         service_version: '1.0.0',
         message: `${logData.message}`,
         data: logData.meta ? JSON.stringify(logData.meta) : null,
-        utcTimestamp: logData.timestamp
+        utcTimestamp: new Date(logData.timestamp).toISOString()
       };
     },
     clientOpts: {
