@@ -1,15 +1,13 @@
-const nodemailer = require('nodemailer');
 const { IncomingWebhook } = require('@slack/webhook');
 const logger = require('./logger');
 const LogMetadata = require('./logMetadata');
 
 /**
  * Alert System for Monitoring and Supervision
- * Handles notifications via email and Slack for system alerts
+ * Handles notifications via Slack for system alerts
  */
 class AlertSystem {
   constructor() {
-    this.emailTransporter = null;
     this.slackWebhook = null;
     this.alertThresholds = this.getAlertThresholds();
     this.alertHistory = new Map(); // Track alert frequency to prevent spam
@@ -20,26 +18,6 @@ class AlertSystem {
    * Initialize notification channels
    */
   initializeNotificationChannels() {
-    // Initialize email transporter if configured
-    if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      this.emailTransporter = nodemailer.createTransporter({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT || 587,
-        secure: process.env.EMAIL_SECURE === 'true',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-
-      logger.info('Email alerting configured', {
-        alertEvent: 'EMAIL_CONFIGURED',
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT || 587,
-        timestamp: new Date().toISOString()
-      });
-    }
-
     // Initialize Slack webhook if configured
     if (process.env.SLACK_WEBHOOK_URL) {
       this.slackWebhook = new IncomingWebhook(process.env.SLACK_WEBHOOK_URL);
@@ -48,12 +26,9 @@ class AlertSystem {
         alertEvent: 'SLACK_CONFIGURED',
         timestamp: new Date().toISOString()
       });
-    }
-
-    if (!this.emailTransporter && !this.slackWebhook) {
-      logger.warn('No alert notification channels configured', {
-        alertEvent: 'NO_CHANNELS_CONFIGURED',
-        message: 'Configure EMAIL_* or SLACK_WEBHOOK_URL environment variables',
+    } else {
+      logger.warn('Configure SLACK_WEBHOOK_URL environment variable for alerts', {
+        alertEvent: 'NO_SLACK_CONFIGURED',
         timestamp: new Date().toISOString()
       });
     }
@@ -114,25 +89,16 @@ class AlertSystem {
     this.alertHistory.set(alertKey, now);
 
     try {
-      // Send to all configured channels
-      const promises = [];
-      
-      if (this.emailTransporter) {
-        promises.push(this.sendEmailAlert(alertData));
-      }
-      
+      // Send to Slack if configured
       if (this.slackWebhook) {
-        promises.push(this.sendSlackAlert(alertData));
+        await this.sendSlackAlert(alertData);
       }
-
-      await Promise.allSettled(promises);
 
       logger.info('Alert sent', {
         alertEvent: 'ALERT_SENT',
         alertType: alertData.type,
         severity: alertData.severity,
         channels: {
-          email: !!this.emailTransporter,
           slack: !!this.slackWebhook
         },
         timestamp: new Date().toISOString()
@@ -149,44 +115,7 @@ class AlertSystem {
     }
   }
 
-  /**
-   * Send email alert
-   */
-  async sendEmailAlert(alertData) {
-    if (!this.emailTransporter) return;
 
-    const subject = `[${alertData.severity.toUpperCase()}] Adopte un Étudiant - ${alertData.title}`;
-    const html = this.generateEmailTemplate(alertData);
-
-    const mailOptions = {
-      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to: process.env.ALERT_EMAIL_TO || process.env.EMAIL_USER,
-      subject,
-      html
-    };
-
-    try {
-      await this.emailTransporter.sendMail(mailOptions);
-      
-      logger.info('Email alert sent', {
-        alertEvent: 'EMAIL_ALERT_SENT',
-        alertType: alertData.type,
-        severity: alertData.severity,
-        recipient: mailOptions.to,
-        timestamp: new Date().toISOString()
-      });
-
-    } catch (error) {
-      logger.error('Failed to send email alert', {
-        alertEvent: 'EMAIL_ALERT_FAILED',
-        alertType: alertData.type,
-        severity: alertData.severity,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      });
-      throw error;
-    }
-  }
 
   /**
    * Send Slack alert
@@ -256,38 +185,7 @@ class AlertSystem {
     }
   }
 
-  /**
-   * Generate email template for alerts
-   */
-  generateEmailTemplate(alertData) {
-    return `
-      <html>
-        <body style="font-family: Arial, sans-serif; margin: 20px;">
-          <div style="border-left: 4px solid ${this.getSeverityColor(alertData.severity)}; padding-left: 20px;">
-            <h2 style="color: ${this.getSeverityColor(alertData.severity)};">
-              🚨 ${alertData.title}
-            </h2>
-            <p><strong>Severity:</strong> ${alertData.severity.toUpperCase()}</p>
-            <p><strong>Type:</strong> ${alertData.type}</p>
-            <p><strong>Description:</strong> ${alertData.description}</p>
-            <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-            
-            ${alertData.metrics ? `
-              <h3>Metrics:</h3>
-              <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 4px;">
-${JSON.stringify(alertData.metrics, null, 2)}
-              </pre>
-            ` : ''}
-            
-            <hr style="margin: 20px 0;">
-            <p style="color: #666; font-size: 12px;">
-              This alert was generated by the Adopte un Étudiant monitoring system.
-            </p>
-          </div>
-        </body>
-      </html>
-    `;
-  }
+
 
   /**
    * Get color for severity level

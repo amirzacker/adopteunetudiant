@@ -235,29 +235,58 @@ class MonitoringScheduler {
     try {
       // Get current metrics
       const metrics = await metricsCollector.getMetricsJson();
-      
+
+      // Validate metrics format
+      if (!Array.isArray(metrics)) {
+        throw new Error('Metrics should be an array');
+      }
+
       // Check error rate
       const errorRateMetric = metrics.find(m => m.name === 'adopte_etudiant_error_rate');
-      if (errorRateMetric && errorRateMetric.values.length > 0) {
+      if (errorRateMetric && errorRateMetric.values && errorRateMetric.values.length > 0) {
         const errorRate = errorRateMetric.values[0].value;
-        
+
+        logger.debug('Error rate check', {
+          schedulerEvent: 'ERROR_RATE_CHECK',
+          errorRate: errorRate.toFixed(2),
+          criticalThreshold: monitoringConfig.thresholds.errorRate.critical,
+          warningThreshold: monitoringConfig.thresholds.errorRate.warning,
+          timestamp: new Date().toISOString()
+        });
+
         if (errorRate >= monitoringConfig.thresholds.errorRate.critical) {
           await alertSystem.sendAlert({
             type: 'error_rate',
             severity: 'critical',
             title: 'Critical Error Rate Alert',
-            description: `Application error rate is ${errorRate.toFixed(2)}%, exceeding critical threshold`,
-            metrics: { errorRate, threshold: monitoringConfig.thresholds.errorRate.critical }
+            description: `Application error rate is ${errorRate.toFixed(2)}%, exceeding critical threshold of ${monitoringConfig.thresholds.errorRate.critical}%`,
+            metrics: {
+              errorRate,
+              threshold: monitoringConfig.thresholds.errorRate.critical,
+              totalRequests: errorRateMetric.metadata?.totalRequests || 0,
+              errorRequests: errorRateMetric.metadata?.errorRequests || 0
+            }
           });
         } else if (errorRate >= monitoringConfig.thresholds.errorRate.warning) {
           await alertSystem.sendAlert({
             type: 'error_rate',
             severity: 'warning',
             title: 'High Error Rate Warning',
-            description: `Application error rate is ${errorRate.toFixed(2)}%, exceeding warning threshold`,
-            metrics: { errorRate, threshold: monitoringConfig.thresholds.errorRate.warning }
+            description: `Application error rate is ${errorRate.toFixed(2)}%, exceeding warning threshold of ${monitoringConfig.thresholds.errorRate.warning}%`,
+            metrics: {
+              errorRate,
+              threshold: monitoringConfig.thresholds.errorRate.warning,
+              totalRequests: errorRateMetric.metadata?.totalRequests || 0,
+              errorRequests: errorRateMetric.metadata?.errorRequests || 0
+            }
           });
         }
+      } else {
+        logger.debug('No error rate metric found or no values available', {
+          schedulerEvent: 'ERROR_RATE_METRIC_MISSING',
+          metricsAvailable: metrics.map(m => m.name),
+          timestamp: new Date().toISOString()
+        });
       }
 
       logger.debug('Alert checks completed', {
@@ -270,6 +299,7 @@ class MonitoringScheduler {
       logger.error('Alert checks error', {
         schedulerEvent: 'ALERT_CHECKS_ERROR',
         error: error.message,
+        stack: error.stack,
         timestamp: new Date().toISOString()
       });
     }

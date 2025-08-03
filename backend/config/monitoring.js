@@ -49,18 +49,6 @@ const monitoringConfig = {
 
   // Notification channels configuration
   notifications: {
-    email: {
-      enabled: !!(process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS),
-      host: process.env.EMAIL_HOST,
-      port: parseInt(process.env.EMAIL_PORT) || 587,
-      secure: process.env.EMAIL_SECURE === 'true',
-      from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
-      to: process.env.ALERT_EMAIL_TO || process.env.EMAIL_USER,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    },
     slack: {
       enabled: !!process.env.SLACK_WEBHOOK_URL,
       webhookUrl: process.env.SLACK_WEBHOOK_URL,
@@ -250,13 +238,13 @@ const monitoringConfig = {
       {
         level: 2,
         severity: ['warning'],
-        channels: ['slack', 'email'],
+        channels: ['slack'],
         delay: 0
       },
       {
         level: 3,
         severity: ['critical'],
-        channels: ['slack', 'email'],
+        channels: ['slack'],
         delay: 0,
         repeat: 15 * 60 * 1000 // Repeat every 15 minutes until resolved
       }
