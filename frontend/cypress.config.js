@@ -31,13 +31,18 @@ module.exports = defineConfig({
     
     setupNodeEvents(on, config) {
       // implement node event listeners here
-      require('@cypress/grep/src/plugin')(config)
-      
+      try {
+        require('@cypress/grep/src/plugin')(config)
+      } catch (e) {
+        // Plugin optional
+        console.warn('cypress-grep plugin not installed; skipping')
+      }
+
       // Code coverage setup (if needed)
       if (config.env.coverage) {
         require('@cypress/code-coverage/task')(on, config)
       }
-      
+
       return config
     },
   },

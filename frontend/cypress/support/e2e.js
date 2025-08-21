@@ -12,8 +12,13 @@ import './commands/ui'
 // Import utilities
 import './utils/test-helpers'
 
-// Import Cypress grep plugin
-import '@cypress/grep/src/support'
+// Import Cypress grep plugin (optional)
+try {
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  require('@cypress/grep/src/support')
+} catch (e) {
+  // plugin not installed - skip
+}
 
 // Global configuration
 Cypress.on('uncaught:exception', (err, runnable) => {
