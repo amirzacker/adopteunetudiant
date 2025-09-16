@@ -219,7 +219,7 @@ const CompanyJobs = () => {
                             {job.description.substring(0, 50)}...
                           </small>
                         </td>
-                        <td>{job.jobType}</td>
+                        <td>{typeof job.jobType === 'object' ? (job.jobType?.name || 'Non spécifié') : (job.jobType || 'Non spécifié')}</td>
                         <td>{job.location}</td>
                         <td>{job.domain?.name || 'Non spécifié'}</td>
                         <td>{job.applicationCount || 0}</td>

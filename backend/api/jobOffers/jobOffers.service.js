@@ -29,7 +29,7 @@ class JobOfferService {
     return JobOffer.findById(id)
       .populate('company', 'name email city profilePicture desc')
       .populate('domain')
-      .populate('searchType');
+      .populate('jobType');
   }
 
   // Get job offers by company
@@ -70,7 +70,7 @@ class JobOfferService {
     return JobOffer.findByIdAndUpdate(id, data, { new: true })
       .populate('company', 'name email city profilePicture')
       .populate('domain')
-      .populate('searchType');
+      .populate('jobType');
   }
 
   // Delete job offer
@@ -147,9 +147,9 @@ class JobOfferService {
       query.$or.push({ domain: student.domain });
     }
 
-    // Match by search type
+    // Match by job type
     if (student.searchType) {
-      query.$or.push({ searchType: student.searchType });
+      query.$or.push({ jobType: student.searchType });
     }
 
     // If no specific criteria, return recent jobs
@@ -162,7 +162,7 @@ class JobOfferService {
       .limit(limit)
       .populate('company', 'name city profilePicture')
       .populate('domain')
-      .populate('searchType');
+      .populate('jobType');
   }
 
   // Search job offers with advanced filters
